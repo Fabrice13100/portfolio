@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fabrice Parriaux : Auteur Photographe</title>
+
+<style>
+:root{
+  --stroke:#d8dbe2;
+  --shadow:0 18px 50px rgba(0,0,0,.08);
+  --r:10px;
+  --neonBorder:rgba(0,168,255,.45);
+  --neonGlow1:rgba(0,168,255,.25);
+  --neonGlow2:rgba(0,168,255,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#f8f8ff;color:#0c0c0c;}
+.wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:26px 26px 100px;display:flex;flex-direction:column;gap:40px;}
+
+/* BREADCRUMB */
+.breadcrumb{font-size:13px;color:#6b7280;display:flex;align-items:center;gap:6px;list-style:none;}
+.breadcrumb a{color:#6b7280;text-decoration:none;}
+.breadcrumb a:hover,.breadcrumb a:focus-visible{color:#0c0c0c;text-decoration:underline;outline:2px solid var(--neonBorder);outline-offset:2px;border-radius:2px;}
+.breadcrumb .sep{color:#d8dbe2;}
+.breadcrumb [aria-current="page"]{color:#0c0c0c;font-weight:500;}
+
+/* HEADER */
+.pageTitle{font-size:22px;font-weight:550;text-align:center;margin:0;}
+
+/* ENCART IDENTITÉ */
+.identity{
+  border:1px solid var(--stroke);border-radius:var(--r);
+  background:linear-gradient(180deg,#f9fbff,#f0f4ff);
+  box-shadow:var(--shadow);
+  padding:22px 26px 0;
+  display:flex;flex-direction:column;gap:0;
+}
+.identity-body{
+  display:flex;align-items:flex-start;gap:14px;
+  padding-bottom:18px;
+}
+.identity-text{flex:1;}
+.identity-text strong{font-size:15px;font-weight:600;color:#0a0c14;display:block;margin-bottom:8px;}
+.identity-text span{font-size:13.5px;color:#374151;line-height:1.6;}
+.identity-footer{
+  border-top:1px solid var(--stroke);
+  padding:10px 0 14px;
+  display:flex;align-items:center;gap:12px;
+}
+.siret-badge{
+  display:flex;align-items:center;gap:10px;
+}
+.siret-badge .siret-label{
+  font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;
+  color:#6b7280;
+  white-space:nowrap;
+}
+.siret-badge .siret-val{
+  font-size:13px;font-weight:700;font-family:monospace;
+  color:#1d4ed8;letter-spacing:.8px;
+  background:#fff;border:1px solid #c7d5f5;
+  border-radius:6px;padding:3px 10px;
+}
+
+/* SECTIONS */
+.section{border:1px solid var(--stroke);border-radius:var(--r);padding:18px;box-shadow:var(--shadow);}
+.section h2{margin:0 0 16px;font-size:20px;font-weight:600;}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+
+/* Grille 2 cartes centrée */
+.grid-duo{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,340px));
+  gap:16px;
+  justify-content:center;
+}
+
+/* CARD */
+.card{border:1px solid var(--stroke);border-radius:10px;overflow:hidden;background:#fff;display:flex;flex-direction:column;}
+.card-media{position:relative;overflow:hidden;flex-shrink:0;}
+.card img{width:100%;height:180px;object-fit:cover;object-position:top;display:block;transition:transform .3s ease;}
+.card-media a:hover img,.card-media a:focus-visible img{transform:scale(1.03);}
+.card-media a:focus-visible{outline:2px solid var(--neonBorder);outline-offset:2px;}
+.card-media a:focus:not(:focus-visible){outline:none;}
+.card .txt{padding:10px 12px;font-size:14px;line-height:1.45;flex:1;}
+.btn-fiche-wrap{
+  display:flex;justify-content:center;
+  padding:10px 12px 12px;border-top:1px solid var(--stroke);
+  background:#fafbfd;flex-shrink:0;
+}
+.btn-fiche{
+  width:80%;padding:8px 0;
+  background:#56b4ef;border:1.5px solid #56b4ef;border-radius:5px;
+  font-size:13px;font-weight:600;color:#fff;cursor:pointer;text-align:center;
+  transition:background .18s,color .18s,border-color .18s,box-shadow .18s,transform .12s;
+  letter-spacing:.3px;
+}
+.btn-fiche:hover{background:#fff;color:#1d4ed8;border-color:#1d4ed8;box-shadow:0 4px 14px rgba(29,78,216,.18);transform:translateY(-1px);}
+.btn-fiche:focus-visible{outline:2px solid var(--neonBorder);outline-offset:2px;}
+.btn-fiche:focus:not(:focus-visible){outline:none;}
+
+/* MODALE FICHE */
+.modal-fiche{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-fiche.is-open{display:flex;}
+.modal-fiche__overlay{position:absolute;inset:0;background:rgba(10,12,20,.6);backdrop-filter:blur(4px);}
+.modal-fiche__panel{
+  position:relative;width:100%;max-width:720px;max-height:90vh;overflow-y:auto;
+  background:#fff;border-radius:18px;
+  box-shadow:0 30px 80px rgba(0,0,0,.22),0 0 0 1px rgba(0,0,0,.06);
+  padding:36px 36px 30px;
+  animation:slideUp .28s cubic-bezier(.22,.68,0,1.2);
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(24px) scale(.97);}to{opacity:1;transform:translateY(0) scale(1);}}
+.modal-fiche__close{
+  position:absolute;top:14px;right:16px;
+  width:32px;height:32px;border-radius:6px;
+  background:#dc2626;border:none;cursor:pointer;
+  display:grid;place-items:center;
+  transition:background .15s;
+  user-select:none;-webkit-user-select:none;
+}
+.modal-fiche__close:hover{background:#b91c1c;}
+.modal-fiche__close:focus-visible{outline:2px solid #fca5a5;outline-offset:2px;border-radius:6px;}
+.modal-fiche__close:focus:not(:focus-visible){outline:none;}
+
+/* CONTENU FICHE */
+.fiche-tag{display:inline-block;background:#f0f4ff;color:#1d4ed8;font-size:11px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-bottom:10px;}
+.fiche-title{font-size:1.45rem;font-weight:700;color:#0a0c14;margin-bottom:22px;line-height:1.25;}
+.fiche-block{margin-bottom:18px;}
+.fiche-block:last-child{margin-bottom:0;}
+.fiche-label{font-size:11px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:#1d4ed8;margin-bottom:5px;}
+.fiche-text{font-size:14.5px;line-height:1.6;color:#334155;}
+.fiche-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px;}
+.fiche-pill{background:#f4f6fb;border:1px solid #dde3ef;color:#374151;font-size:12.5px;font-weight:500;padding:3px 10px;border-radius:20px;}
+.fiche-steps{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:7px;}
+.fiche-steps li{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;color:#334155;line-height:1.5;}
+.fiche-steps li::before{content:attr(data-n);min-width:22px;height:22px;background:#eff3ff;color:#1d4ed8;border-radius:50%;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.fiche-competences{display:flex;flex-wrap:wrap;gap:6px;}
+.fiche-competence{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;font-size:12.5px;font-weight:500;padding:3px 10px;border-radius:20px;}
+.fiche-empty{font-size:13px;color:#94a3b8;font-style:italic;padding:8px 12px;background:#f8f9fa;border-radius:8px;border:1px dashed #d1d5db;}
+.fiche-divider{border:none;border-top:1px solid #f1f3f7;margin:4px 0 18px;}
+
+/* RESPONSIVE */
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:700px){
+  .grid-duo{grid-template-columns:1fr;max-width:400px;margin:0 auto;}
+}
+@media(max-width:600px){
+  .grid{grid-template-columns:1fr;}
+  .modal-fiche__panel{padding:24px 20px 20px;}
+  .fiche-title{font-size:1.2rem;}
+  .identity-body{flex-direction:column;align-items:flex-start;}
+}
+
+    /* BOKEH FOND */
+    #bokeh-canvas{
+      position:fixed;
+      inset:0;
+      width:100%;
+      height:100%;
+      z-index:0;
+      pointer-events:none;
+    }
+
+  /* FOOTER */
+  .site-footer{border:1px solid var(--stroke);border-radius:var(--r);background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(244,245,247,.92));box-shadow:var(--shadow);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+  .footer-identity{font-size:13px;line-height:1.5;color:#374151;}
+  .footer-identity strong{display:block;font-size:14px;font-weight:600;color:#0a0c14;}
+  .footer-back{font-size:13px;color:#6b7280;text-decoration:none;transition:color .15s;}
+  .footer-back:hover{color:#0c0c0c;text-decoration:underline;}
+  .footer-back:focus-visible{outline:2px solid var(--neonBorder);outline-offset:2px;border-radius:2px;}
+  .footer-back:focus:not(:focus-visible){outline:none;}
+  @media(max-width:600px){.site-footer{flex-direction:column;align-items:flex-start;gap:8px;}}
+  </style>
+</head>
+
+<body>
+
+  <canvas id="bokeh-canvas" aria-hidden="true"></canvas>
+<div class="wrap">
+
+<!-- Fil d'Ariane -->
+<nav aria-label="Fil d'Ariane">
+  <ol class="breadcrumb">
+    <li><a href="index.html">Accueil</a></li>
+    <li class="sep" aria-hidden="true">›</li>
+    <li><span aria-current="page">Fabrice Parriaux, Auteur photographe</span></li>
+  </ol>
+</nav>
+
+<h1 class="pageTitle">Fabrice Parriaux, Auteur photographe</h1>
+
+<!-- ENCART IDENTITÉ -->
+<div class="identity">
+  <div class="identity-body">
+    <div class="identity-text">
+      <strong>Fabrice Parriaux</strong>
+      <span>Photographe spécialisé dans les paysages, je collabore depuis de nombreuses années avec le comité départemental du tourisme du Doubs (CDT), partenaire fidèle de mon travail. Mes images, reconnues pour leur qualité, ont également été sélectionnées par des sociétés de production telles qu'ADDM Studio et ENIBAS Productions.</span>
+      <span style="display:block;margin-top:8px;">Activité exercée en micro-entreprise : devis, facturation, demandes d'autorisation de prises de vues en zone réglementée (drone), et respect du droit d'auteur et des cessions de droits.</span>
+    </div>
+  </div>
+  <div class="identity-footer">
+    <div class="siret-badge">
+      <span class="siret-label">SIRET</span>
+      <span class="siret-val">808 411 672 00062</span>
+    </div>
+  </div>
+</div>
+
+<!-- PHOTOGRAPHIE -->
+<section class="section" aria-labelledby="section-photo">
+  <div class="grid-duo">
+
+    <div class="card">
+      <div class="card-media">
+        <a href="http://fabrice.parriaux.free.fr/wordpress/" target="_blank" rel="noopener"
+           aria-label="Visiter le portfolio Images du Haut-Doubs (nouvel onglet)">
+          <img src="images/site_web_illustration.jpg"
+               alt="Portfolio photographique, Images du Haut-Doubs"
+               loading="lazy">
+        </a>
+      </div>
+      <div class="txt">
+        <strong>Portfolio Images du Haut-Doubs</strong><br>
+        Sélection de photographies de nature et de paysages du Haut-Doubs.
+      </div>
+      <div class="btn-fiche-wrap">
+        <button class="btn-fiche" data-proj="P20" aria-label="Voir la fiche projet portfolio photo">Voir la fiche projet</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-media">
+        <a href="https://www.facebook.com/imageshautdoubs" target="_blank" rel="noopener"
+           aria-label="Visiter la page Facebook Images du Haut-Doubs (nouvel onglet)">
+          <img src="images/vignette_imageshautdoubs.jpg"
+               alt="Page Facebook, Images du Haut-Doubs"
+               loading="lazy">
+        </a>
+      </div>
+      <div class="txt">
+        <strong>Diffusion &amp; droits d'utilisation</strong><br>
+        Vente de tirages et cession de licences d'utilisation pour professionnels et particuliers
+      </div>
+      <div class="btn-fiche-wrap">
+        <button class="btn-fiche" data-proj="P21" aria-label="Voir la fiche prestations photo">Voir la fiche projet</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-identity">
+    <strong>Fabrice Parriaux</strong>
+    Chargé de production numérique et création visuelle&nbsp;&nbsp;|&nbsp;&nbsp;Infographiste&nbsp;&nbsp;|&nbsp;&nbsp;Auteur-photographe
+  </div>
+  <a class="footer-back" href="index.html">Retour à l'accueil</a>
+</footer>
+
+</div>
+
+<!-- MODALE FICHE -->
+<div class="modal-fiche" id="ficheModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="ficheTitleEl">
+  <div class="modal-fiche__overlay" id="ficheOverlay"></div>
+  <div class="modal-fiche__panel" id="fichePanel">
+    <button class="modal-fiche__close" id="ficheClose" aria-label="Fermer la fiche projet">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="pointer-events:none">
+        <path d="M1 1l12 12M13 1L1 13" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <div id="ficheContent"></div>
+  </div>
+</div>
+
+<script>
+const PROJECTS = {
+  P20: {
+    tag: "Photographie · Nature & Paysages",
+    title: "Portfolio Images du Haut-Doubs",
+    contexte: "Création et gestion d'un portfolio photographique personnel dédié aux paysages et à la nature du massif du Haut-Doubs, exercé dans le cadre d'une activité de micro-entreprise (SIRET 808 411 672 00062).",
+    objectif: "Présenter et valoriser un travail photographique professionnel, partager une vision artistique du territoire et développer une clientèle pour la vente de tirages et la cession de droits.",
+    public: "Particuliers, collectivités, éditeurs, agences de communication, offices de tourisme.",
+    demarche: ["Définition d'une direction artistique centrée sur le territoire du Haut-Doubs : choix des sujets (faune, flore, paysages, lumières), cohérence stylistique maintenue sur l'ensemble du fonds", "Préparation rigoureuse de chaque session de prise de vue : identification des sujets à photographier selon la saison, analyse des conditions météorologiques, choix des horaires en fonction de la qualité de la lumière (lever, coucher, lumière rasante)", "Prise de vue en conditions naturelles, incluant les captations aériennes avec drone (télépilote DGAC NoED42 depuis 2013) pour les plans de paysages", "Post-traitement professionnel avec Adobe Lightroom (développement RAW, cohérence colorimétrique des séries) et Adobe Photoshop si nécessaire", "Sélection, organisation par thématiques et publication sur le site portfolio WordPress et les réseaux sociaux"],
+    outils: ["Adobe Lightroom", "Adobe Photoshop", "WordPress", "Drone DJI (télépilote DGAC depuis 2013)"],
+    resultat: "Portfolio actif, régulièrement mis à jour. Vente de tirages et cessions de licences réalisées auprès de clients professionnels et particuliers. Publications dans Doubs Mag et participation à deux ouvrages édités par les Presses du Belvédère.",
+    competences: ["Direction artistique et cohérence d'un fonds photographique sur le long terme", "Préparation et anticipation des prises de vue (saison, météo, lumière)", "Prise de vue en conditions naturelles et aériennes (drone, DGAC)", "Post-traitement professionnel (développement RAW, cohérence de série)", "Valorisation et diffusion d'un travail artistique personnel"]
+  },
+  P21: {
+    tag: "Micro-entreprise · Droits & Licences",
+    title: "Prestations photographiques, tirages & licences.",
+    contexte: "Dans le cadre de mon activité de micro-entreprise (SIRET), je propose deux types de prestations : la vente de tirages photographiques et la cession de licences d'utilisation de mes images pour des usages professionnels (communication, presse, édition, web). Publication régulière de photographies dans le magazine de toursime Doubs Mag et participation à deux ouvrages, Le Haut-Doubs, de Pierre Dornier et Urgences Haut-Doubs, issu d'un collectif dont je suis partie prenante (deux livres édité par les Presses du Belvédère).",
+    objectif: "Valoriser commercialement un fonds photographique constitué sur près de trois décennies, en proposant des formules adaptées aux besoins des clients : tirages uniques encadrés, licences limitées ou étendues.",
+    public: "Particuliers souhaitant acquérir un tirage d'art, professionnels (agences, collectivités, éditeurs) cherchant à utiliser des images du territoire.",
+    demarche: ["Définition des tarifs et des conditions générales de vente", "Rédaction des contrats de cession de droits adaptés à chaque usage (durée, territoire, support)", "Gestion de la facturation et des obligations comptables liées à la micro-entreprise", "Respect du droit d'auteur et des dispositions du Code de la propriété intellectuelle"],
+    outils: ["Adobe Lightroom", "Adobe Photoshop", "Excel"],
+    resultat: "Activité régulière de cession de licences et de vente de tirages, gérée en conformité avec les obligations légales de la micro-entreprise.",
+    competences: ["Gestion d'une micro-entreprise (SIRET, facturation, comptabilité)", "Maîtrise du droit d'auteur et des contrats de cession de droits", "Négociation et relation client", "Valorisation commerciale d'un fonds photographique"]
+  }
+};
+
+function renderFiche(id) {
+  const p = PROJECTS[id];
+  if (!p) return `<div class="fiche-empty">Fiche en cours de rédaction — revenez bientôt !</div>`;
+  let html = '';
+  if (p.tag) html += `<div class="fiche-tag">${p.tag}</div>`;
+  html += `<div class="fiche-title" id="ficheTitleEl">${p.title}</div><hr class="fiche-divider">`;
+  const block = (label, content) => `<div class="fiche-block"><div class="fiche-label">${label}</div>${content}</div>`;
+  if (p.contexte) html += block('Contexte &amp; besoin', `<div class="fiche-text">${p.contexte}</div>`);
+  if (p.objectif) html += block('Objectif', `<div class="fiche-text">${p.objectif}</div>`);
+  if (p.public) html += block('Public cible', `<div class="fiche-text">${p.public}</div>`);
+  if (p.demarche && p.demarche.length) {
+    const steps = p.demarche.map((s,i)=>`<li data-n="${i+1}">${s}</li>`).join('');
+    html += block('Démarche', `<ol class="fiche-steps">${steps}</ol>`);
+  }
+  if (p.outils && p.outils.length) {
+    const pills = p.outils.map(o=>`<span class="fiche-pill">${o}</span>`).join('');
+    html += block('Outils utilisés', `<div class="fiche-pills">${pills}</div>`);
+  }
+  if (p.resultat) html += block('Résultat &amp; diffusion', `<div class="fiche-text">${p.resultat}</div>`);
+  if (p.competences && p.competences.length) {
+    const comps = p.competences.map(c=>`<span class="fiche-competence">${c}</span>`).join('');
+    html += block('Compétences mobilisées', `<div class="fiche-competences">${comps}</div>`);
+  }
+  return html;
+}
+
+const ficheModal   = document.getElementById('ficheModal');
+const ficheContent = document.getElementById('ficheContent');
+const fichePanel   = document.getElementById('fichePanel');
+let ficheTrigger   = null;
+
+function openFiche(id, trigger) {
+  ficheContent.innerHTML = renderFiche(id);
+  ficheModal.classList.add('is-open');
+  ficheModal.setAttribute('aria-hidden', 'false');
+  fichePanel.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+  ficheTrigger = trigger || null;
+  requestAnimationFrame(() => document.getElementById('ficheClose').focus());
+}
+function closeFiche() {
+  ficheModal.classList.remove('is-open');
+  ficheModal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+  if (ficheTrigger) ficheTrigger.focus();
+}
+
+document.querySelectorAll('.btn-fiche').forEach(btn => {
+  btn.addEventListener('click', () => openFiche(btn.dataset.proj, btn));
+});
+document.getElementById('ficheClose').addEventListener('click', closeFiche);
+document.getElementById('ficheOverlay').addEventListener('click', closeFiche);
+
+ficheModal.addEventListener('keydown', e => {
+  if (!ficheModal.classList.contains('is-open')) return;
+  if (e.key === 'Escape') { closeFiche(); return; }
+  if (e.key === 'Tab') {
+    const focusable = ficheModal.querySelectorAll('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])');
+    const first = focusable[0];
+    const last  = focusable[focusable.length - 1];
+    if (e.shiftKey) {
+      if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+    } else {
+      if (document.activeElement === last)  { e.preventDefault(); first.focus(); }
+    }
+  }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && ficheModal.classList.contains('is-open')) closeFiche();
+});
+</script>
+
+  <script>
+    (function() {
+      /* =====================================================
+         REGLAGE DU MOUVEMENT : modifier la valeur de SPEED
+         0.2 = tres lent   |   0.5 = lent   |   0.9 = moyen
+         1.5 = rapide      |   2.5 = tres rapide
+      ===================================================== */
+      var SPEED = 0.9;
+
+      var canvas = document.getElementById('bokeh-canvas');
+      var ctx = canvas.getContext('2d');
+      var W = 0, H = 0;
+
+      function resize() {
+        W = window.innerWidth;
+        H = window.innerHeight;
+        canvas.width = Math.round(W * window.devicePixelRatio);
+        canvas.height = Math.round(H * window.devicePixelRatio);
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      }
+
+      resize();
+      window.addEventListener('resize', resize);
+
+      var COLORS = [
+        'rgba(255,100,120,',
+        'rgba(80,160,255,',
+        'rgba(60,220,180,',
+        'rgba(255,200,60,',
+        'rgba(180,80,255,',
+        'rgba(255,140,60,',
+        'rgba(60,200,255,',
+        'rgba(255,80,180,'
+      ];
+
+      var COUNT = 18;
+      var bubbles = [];
+
+      function initBubbles() {
+        bubbles = [];
+        for (var i = 0; i < COUNT; i++) {
+          bubbles.push({
+            x: Math.random() * W,
+            y: Math.random() * H,
+            r: Math.random() * 120 + 40,
+            vx: (Math.random() - 0.5) * 2 * SPEED,
+            vy: (Math.random() - 0.5) * 2 * SPEED,
+            color: COLORS[Math.floor(Math.random() * COLORS.length)],
+            alpha: Math.random() * 0.15 + 0.06,
+            phase: Math.random() * Math.PI * 2,
+            pulseSpeed: Math.random() * 0.004 + 0.002
+          });
+        }
+      }
+
+      initBubbles();
+
+      var t = 0;
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        for (var i = 0; i < bubbles.length; i++) {
+          var b = bubbles[i];
+          var pulse = 1 + 0.06 * Math.sin(t * b.pulseSpeed * 60 + b.phase);
+          var r = b.r * pulse;
+          var grad = ctx.createRadialGradient(b.x, b.y, r * 0.1, b.x, b.y, r);
+          grad.addColorStop(0, b.color + (b.alpha * 1.4) + ')');
+          grad.addColorStop(0.5, b.color + b.alpha + ')');
+          grad.addColorStop(1, b.color + '0)');
+          ctx.filter = 'blur(22px)';
+          ctx.beginPath();
+          ctx.arc(b.x, b.y, r, 0, Math.PI * 2);
+          ctx.fillStyle = grad;
+          ctx.fill();
+          ctx.filter = 'none';
+          b.x += b.vx;
+          b.y += b.vy;
+          if (b.x < -b.r)    b.x = W + b.r;
+          if (b.x > W + b.r) b.x = -b.r;
+          if (b.y < -b.r)    b.y = H + b.r;
+          if (b.y > H + b.r) b.y = -b.r;
+        }
+        t++;
+        requestAnimationFrame(draw);
+      }
+
+      draw();
+    })();
+  </script>
+
+</body>
+</html>

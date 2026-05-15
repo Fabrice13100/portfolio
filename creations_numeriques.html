@@ -1,0 +1,813 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+<title>Créations numériques – Portfolio</title>
+
+<style>
+:root{
+  --stroke:#d8dbe2;
+  --shadow:0 18px 50px rgba(0,0,0,.08);
+  --r:10px;
+  --neonBorder:rgba(0,168,255,.45);
+  --neonGlow1:rgba(0,168,255,.25);
+  --neonGlow2:rgba(0,168,255,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#f8f8ff;color:#0c0c0c;}
+.wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:26px 26px 100px;display:flex;flex-direction:column;gap:40px;}
+
+/* BREADCRUMB */
+.breadcrumb{font-size:13px;color:#6b7280;display:flex;align-items:center;gap:6px;list-style:none;}
+.breadcrumb a{color:#6b7280;text-decoration:none;}
+.breadcrumb a:hover,.breadcrumb a:focus-visible{color:#0c0c0c;text-decoration:underline;outline:2px solid var(--neonBorder);outline-offset:2px;border-radius:2px;}
+.breadcrumb .sep{color:#d8dbe2;}
+.breadcrumb [aria-current="page"]{color:#0c0c0c;font-weight:500;}
+
+/* HEADER */
+.pageTitle{font-size:22px;font-weight:550;text-align:center;margin:0;}
+
+/* SECTIONS */
+.section{border:1px solid var(--stroke);border-radius:var(--r);padding:18px;box-shadow:var(--shadow);}
+.section h2{margin:0 0 16px;font-size:20px;font-weight:600;}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+
+/* CARD */
+.card{border:1px solid var(--stroke);border-radius:10px;overflow:hidden;background:#fff;display:flex;flex-direction:column;}
+.card-media{position:relative;overflow:hidden;flex-shrink:0;}
+.card img{width:100%;height:180px;object-fit:cover;object-position:top;display:block;transition:transform .3s ease;}
+.card-media a:hover img,.card-media a:focus-visible img{transform:scale(1.03);}
+
+/* focus visible sur les liens image */
+.card-media a:focus-visible{outline:2px solid var(--neonBorder);outline-offset:2px;}
+.card-media a:focus:not(:focus-visible){outline:none;}
+
+.vid-overlay{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  color:#fff;background:rgba(0,0,0,.35);font-size:15px;font-weight:500;gap:6px;
+  text-decoration:none;transition:background .2s;
+}
+.vid-overlay:hover,.vid-overlay:focus-visible{background:rgba(0,0,0,.5);}
+.vid-overlay:focus-visible{outline:2px solid var(--neonBorder);outline-offset:-2px;}
+.vid-overlay:focus:not(:focus-visible){outline:none;}
+.vid-icon{font-size:22px;}
+.card .txt{padding:10px 12px;font-size:14px;line-height:1.45;flex:1;}
+.btn-fiche-wrap{
+  display:flex;align-items:center;gap:8px;
+  padding:10px 12px 12px;border-top:1px solid var(--stroke);
+  background:#fafbfd;flex-shrink:0;
+}
+.proj-badge{
+  font-size:13px;font-weight:600;color:#1d4ed8;
+  flex-shrink:0;letter-spacing:.04em;
+}
+.btn-fiche-wrap .btn-fiche{width:auto;flex:1;}
+.btn-fiche{
+  width:80%;padding:8px 0;
+  background:#56b4ef;border:1.5px solid #56b4ef;border-radius:5px;
+  font-size:13px;font-weight:600;color:#fff;cursor:pointer;text-align:center;
+  transition:background .18s,color .18s,border-color .18s,box-shadow .18s,transform .12s;
+  letter-spacing:.3px;
+}
+.btn-fiche:hover{
+  background:#fff;color:#1d4ed8;border-color:#1d4ed8;
+  box-shadow:0 4px 14px rgba(29,78,216,.18);
+  transform:translateY(-1px);
+}
+.btn-fiche:focus-visible{outline:2px solid var(--neonBorder);outline-offset:2px;}
+.btn-fiche:focus:not(:focus-visible){outline:none;}
+
+/* MODALE IMAGE */
+.modal-img{position:fixed;inset:0;display:none;z-index:9000;}
+.modal-img.is-open{display:flex;align-items:center;justify-content:center;}
+.modal-img__overlay{position:absolute;inset:0;background:rgba(0,0,0,.55);}
+.modal-img__panel{
+  position:relative;z-index:1;width:fit-content;
+  max-width:min(96vw,1200px);max-height:92vh;background:#fff;
+  border-radius:14px;overflow:hidden;border:1px solid rgba(216,219,226,.9);
+  box-shadow:0 30px 80px rgba(0,0,0,.25);
+}
+.modal-img__img{display:block;max-width:96vw;max-height:92vh;}
+.modal-img__close{
+  position:absolute;top:10px;right:10px;
+  width:32px;height:32px;border-radius:6px;
+  background:#dc2626;border:none;
+  font-size:18px;line-height:1;cursor:pointer;color:#fff;
+  display:grid;place-items:center;
+  transition:background .15s;
+  user-select:none;-webkit-user-select:none;
+}
+.modal-img__close:hover{background:#b91c1c;}
+.modal-img__close:focus-visible{outline:2px solid #fca5a5;outline-offset:2px;}
+
+/* MODALE FICHE */
+.modal-fiche{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-fiche.is-open{display:flex;}
+.modal-fiche__overlay{position:absolute;inset:0;background:rgba(10,12,20,.6);backdrop-filter:blur(4px);}
+.modal-fiche__panel{
+  position:relative;width:100%;max-width:720px;max-height:90vh;overflow-y:auto;
+  background:#fff;border-radius:18px;
+  box-shadow:0 30px 80px rgba(0,0,0,.22),0 0 0 1px rgba(0,0,0,.06);
+  padding:36px 36px 30px;
+  animation:slideUp .28s cubic-bezier(.22,.68,0,1.2);
+}
+@keyframes slideUp{
+  from{opacity:0;transform:translateY(24px) scale(.97);}
+  to{opacity:1;transform:translateY(0) scale(1);}
+}
+.modal-fiche__close{
+  position:absolute;top:14px;right:16px;
+  width:32px;height:32px;border-radius:6px;
+  background:#dc2626;border:none;
+  font-size:18px;line-height:1;cursor:pointer;color:#fff;
+  display:grid;place-items:center;
+  transition:background .15s;
+  user-select:none;-webkit-user-select:none;
+}
+.modal-fiche__close:hover{background:#b91c1c;}
+.modal-fiche__close:focus-visible{outline:2px solid #fca5a5;outline-offset:2px;border-radius:6px;}
+.modal-fiche__close:focus:not(:focus-visible){outline:none;}
+
+/* CONTENU FICHE */
+.fiche-tag{display:inline-block;background:#f0f4ff;color:#1d4ed8;font-size:11px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-bottom:10px;}
+.fiche-title{font-size:1.45rem;font-weight:700;color:#0a0c14;margin-bottom:22px;line-height:1.25;}
+.fiche-block{margin-bottom:18px;}
+.fiche-block:last-child{margin-bottom:0;}
+.fiche-label{font-size:11px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:#1d4ed8;margin-bottom:5px;}
+.fiche-text{font-size:14.5px;line-height:1.6;color:#334155;}
+.fiche-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px;}
+.fiche-pill{background:#f4f6fb;border:1px solid #dde3ef;color:#374151;font-size:12.5px;font-weight:500;padding:3px 10px;border-radius:20px;}
+.fiche-steps{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:7px;}
+.fiche-steps li{display:grid;grid-template-columns:22px 1fr;gap:10px;font-size:14.5px;color:#334155;line-height:1.5;}
+.fiche-steps li::before{
+  content:attr(data-n);width:22px;height:22px;background:#eff3ff;color:#1d4ed8;
+  border-radius:50%;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;
+}
+.fiche-competences{display:flex;flex-wrap:wrap;gap:6px;}
+.fiche-competence{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;font-size:12.5px;font-weight:500;padding:3px 10px;border-radius:20px;}
+.fiche-empty{font-size:13px;color:#94a3b8;font-style:italic;padding:8px 12px;background:#f8f9fa;border-radius:8px;border:1px dashed #d1d5db;}
+.fiche-divider{border:none;border-top:1px solid #f1f3f7;margin:4px 0 18px;}
+
+/* RESPONSIVE */
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:600px){
+  .grid{grid-template-columns:1fr;}
+  .modal-fiche__panel{padding:24px 20px 20px;}
+  .fiche-title{font-size:1.2rem;}
+}
+
+    /* BOKEH FOND */
+    #bokeh-canvas{
+      position:fixed;
+      inset:0;
+      width:100%;
+      height:100%;
+      z-index:0;
+      pointer-events:none;
+    }
+ 
+.fiche-veille-label{font-size:11px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:#1d4ed8;margin-bottom:5px;}
+.fiche-veille-text{font-size:14.5px;line-height:1.6;color:#334155;background:#fffbeb;border-left:3px solid #f59e0b;padding:10px 14px;border-radius:0 6px 6px 0;}
+.fiche-ux-pdf{display:inline-flex;align-items:center;gap:7px;margin-top:4px;margin-bottom:8px;font-size:13px;font-weight:600;color:#0e7490;text-decoration:none;letter-spacing:.1px;}
+.fiche-ux-pdf:hover{text-decoration:underline;}
+.fiche-ux-pdf:focus-visible{outline:2px solid var(--neonBorder);outline-offset:2px;border-radius:3px;}
+.fiche-ux-pdf:focus:not(:focus-visible){outline:none;}
+
+/* FOOTER */
+.site-footer{border:1px solid var(--stroke);border-radius:var(--r);background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(244,245,247,.92));box-shadow:var(--shadow);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.footer-identity{font-size:13px;line-height:1.5;color:#374151;}
+.footer-identity strong{display:block;font-size:14px;font-weight:600;color:#0a0c14;}
+.footer-back{font-size:13px;color:#6b7280;text-decoration:none;transition:color .15s;}
+.footer-back:hover{color:#0c0c0c;text-decoration:underline;}
+.footer-back:focus-visible{outline:2px solid var(--neonBorder);outline-offset:2px;border-radius:2px;}
+.footer-back:focus:not(:focus-visible){outline:none;}
+@media(max-width:600px){.site-footer{flex-direction:column;align-items:flex-start;gap:8px;}}
+
+</style>
+</head>
+
+<body>
+<canvas id="bokeh-canvas" aria-hidden="true"></canvas>
+<div class="wrap">
+
+<!-- Fil d'Ariane -->
+<nav aria-label="Fil d'Ariane">
+  <ol class="breadcrumb">
+    <li><a href="index.html">Accueil</a></li>
+    <li class="sep" aria-hidden="true">›</li>
+    <li><span aria-current="page">Créations numériques</span></li>
+  </ol>
+</nav>
+
+<h1 class="pageTitle">Créations numériques</h1>
+
+<!-- GRAPHISME -->
+<section class="section" aria-labelledby="section-graphisme">
+  <h2 id="section-graphisme">Graphisme</h2>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-media">
+        <a href="https://enasis.fr" target="_blank" rel="noopener"
+           aria-label="Visiter le site ENASIS (nouvel onglet)">
+          <img src="images/vignette_enasis.jpg"
+               alt="Capture du site ENASIS – nouvelle identité visuelle"
+               loading="lazy">
+        </a>
+      </div>
+      <div class="txt">
+        <strong>Site web : Dispositif ENASIS</strong><br>
+        Nouvelle identité visuelle.<br>
+        Graphisme : Adobe Illustrator
+      </div>
+      <div class="btn-fiche-wrap">
+        <span class="proj-badge" aria-label="Projet 01">P01</span>
+        <button class="btn-fiche" data-proj="P01" aria-label="Voir la fiche projet ENASIS">Voir la fiche projet</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-media">
+        <a href="images/plan_3d_salles_goc.jpg" class="openImgModal"
+           data-img="images/plan_3d_salles_goc.jpg"
+           data-alt="Plan 3D des salles de formation GOC – vue aérienne"
+           aria-label="Agrandir le plan 3D des salles de formation GOC">
+          <img src="images/plan_3d_salles_goc.jpg"
+               alt="Plan 3D des salles de formation GOC – vue aérienne"
+               loading="lazy">
+        </a>
+      </div>
+      <div class="txt">
+        <strong>Plan 3D : salles de formation</strong><br>
+        Modélisation 3D : SketchUp<br>
+        Rendu vectoriel : Adobe Illustrator
+      </div>
+      <div class="btn-fiche-wrap">
+        <span class="proj-badge" aria-label="Projet 02">P02</span>
+        <button class="btn-fiche" data-proj="P02" aria-label="Voir la fiche projet Plan 3D salles de formation">Voir la fiche projet</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-media">
+        <a href="images/ecussons.jpg" class="openImgModal"
+           data-img="images/ecussons.jpg"
+           data-alt="Création graphique d'insignes pour les unités du SDIS 25"
+           aria-label="Agrandir la création graphique – insignes">
+          <img src="images/ecussons.jpg"
+               alt="Création graphique d'insignes pour les unités du SDIS 25"
+               loading="lazy">
+        </a>
+      </div>
+      <div class="txt">
+        <strong>Création de blasons et logos</strong><br>
+        Graphisme : Adobe Illustrator, Adobe Animate
+      </div>
+      <div class="btn-fiche-wrap">
+        <span class="proj-badge" aria-label="Projet 03">P03</span>
+        <button class="btn-fiche" data-proj="P03" aria-label="Voir la fiche projet Création d'insignes">Voir la fiche projet</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PRINT -->
+<section class="section" aria-labelledby="section-print">
+  <h2 id="section-print">Print</h2>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-media">
+        <a href="images/gestion_crise.jpg" class="openImgModal"
+           data-img="images/gestion_crise.jpg"
+           data-alt="Extrait de l'offre de formations à la Gestion de crise – mise en page Adobe InDesign"
+           aria-label="Agrandir l'offre de formation Gestion de crise">
+          <img src="images/gestion_crise.jpg"
+               alt="Extrait de l'offre de formations à la Gestion de crise – mise en page Adobe InDesign"
+               loading="lazy">
+        </a>
+      </div>
+      <div class="txt">
+        <strong>Offre de formations : Gestion de crise</strong> (extrait)<br>
+        Réalisation : Adobe InDesign<br>
+        Graphisme : Adobe Animate
+      </div>
+      <div class="btn-fiche-wrap">
+        <span class="proj-badge" aria-label="Projet 04">P04</span>
+        <button class="btn-fiche" data-proj="P04" aria-label="Voir la fiche projet Gestion de crise">Voir la fiche projet</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-media">
+        <a href="docs/guide_apsecu_v2.pdf" target="_blank" rel="noopener"
+           aria-label="Ouvrir le guide ENSOSP Assistant de sécurité en PDF (nouvel onglet)">
+          <img src="images/guide_apsecu.jpg"
+               alt="Couverture du guide ENSOSP – Assistant de sécurité, illustré en 3D SketchUp"
+               loading="lazy">
+        </a>
+      </div>
+      <div class="txt">
+        <strong>Guide ENSOSP : Assistant de sécurité</strong> (extrait)<br>
+        Graphisme : Adobe Illustrator<br>
+        Modélisation 3D : SketchUp
+      </div>
+      <div class="btn-fiche-wrap">
+        <span class="proj-badge" aria-label="Projet 05">P05</span>
+        <button class="btn-fiche" data-proj="P05" aria-label="Voir la fiche projet Guide ENSOSP">Voir la fiche projet</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-media">
+        <a href="docs/guides_sdis25.pdf" target="_blank" rel="noopener"
+           aria-label="Ouvrir les Guides SDIS 25 en PDF (nouvel onglet)">
+          <img src="images/guides.jpg"
+               alt="Couverture des Guides SDIS 25 – mise en page PowerPoint et graphisme Illustrator"
+               loading="lazy">
+        </a>
+      </div>
+      <div class="txt">
+        <strong>Guides SDIS 25</strong> (extrait)<br>
+        Graphisme : Adobe Illustrator<br>
+        Mise en page : PowerPoint
+      </div>
+      <div class="btn-fiche-wrap">
+        <span class="proj-badge" aria-label="Projet 06">P06</span>
+        <button class="btn-fiche" data-proj="P06" aria-label="Voir la fiche projet Guides SDIS 25">Voir la fiche projet</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- VIDEOS -->
+<section class="section" aria-labelledby="section-videos">
+  <h2 id="section-videos">Vidéos</h2>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-media">
+        <img src="images/vignette_crossnat.jpg"
+             alt="Vignette – Cross national 2025 des sapeurs-pompiers de France"
+             loading="lazy">
+        <a class="vid-overlay"
+           href="https://www.youtube.com/watch?v=CTWdrFPbKJg"
+           target="_blank" rel="noopener"
+           aria-label="Regarder la vidéo Cross national 2025 des sapeurs-pompiers sur YouTube (nouvel onglet)">
+          <span class="vid-icon" aria-hidden="true">▶</span>
+          <span>Regarder sur YouTube</span>
+        </a>
+      </div>
+      <div class="txt">
+        <strong>Cross national 2025 des sapeurs-pompiers de France</strong><br>
+        Montage : Adobe Premiere Pro<br>
+        Motion design : Adobe Animate
+      </div>
+      <div class="btn-fiche-wrap">
+        <span class="proj-badge" aria-label="Projet 07">P07</span>
+        <button class="btn-fiche" data-proj="P07" aria-label="Voir la fiche projet Cross national 2025">Voir la fiche projet</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-media">
+        <img src="images/vignette_enasis_video.jpg"
+             alt="Vignette – Portail national de formation à distance ENASIS"
+             loading="lazy">
+        <a class="vid-overlay"
+           href="https://www.youtube.com/watch?v=z9E6dAwqkR8"
+           target="_blank" rel="noopener"
+           aria-label="Regarder la vidéo de présentation du portail ENASIS sur YouTube (nouvel onglet)">
+          <span class="vid-icon" aria-hidden="true">▶</span>
+          <span>Regarder sur YouTube</span>
+        </a>
+      </div>
+      <div class="txt">
+        <strong>Portail national de formation à distance : ENASIS</strong><br>
+        Montage : Adobe Premiere Pro<br>
+        Motion design : Adobe Illustrator, Adobe Animate
+      </div>
+      <div class="btn-fiche-wrap">
+        <span class="proj-badge" aria-label="Projet 08">P08</span>
+        <button class="btn-fiche" data-proj="P08" aria-label="Voir la fiche projet ENASIS vidéo">Voir la fiche projet</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-media">
+        <img src="images/vignette_covid.jpg"
+             alt="Vignette – Vidéo pandémie Covid-19, prise de vues par drone"
+             loading="lazy">
+        <a class="vid-overlay"
+           href="https://www.youtube.com/watch?v=y9ek80n6ABQ"
+           target="_blank" rel="noopener"
+           aria-label="Regarder la vidéo pandémie Covid-19 sur YouTube (nouvel onglet)">
+          <span class="vid-icon" aria-hidden="true">▶</span>
+          <span>Regarder sur YouTube</span>
+        </a>
+      </div>
+      <div class="txt">
+        <strong>Vidéo pandémie Covid-19</strong><br>
+        Montage : Adobe Premiere Pro<br>
+        Prise de vues : Drone
+      </div>
+      <div class="btn-fiche-wrap">
+        <span class="proj-badge" aria-label="Projet 09">P09</span>
+        <button class="btn-fiche" data-proj="P09" aria-label="Voir la fiche projet vidéo Covid-19">Voir la fiche projet</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer class="site-footer" role="contentinfo">
+    <div class="footer-identity">
+      <strong>Fabrice Parriaux</strong>
+      Chargé de production numérique et création visuelle&nbsp;&nbsp;|&nbsp;&nbsp;Infographiste&nbsp;&nbsp;|&nbsp;&nbsp;Auteur-photographe
+    </div>
+    <a class="footer-back" href="index.html">Retour à l'accueil</a>
+  </footer>
+
+</div>
+
+<!-- MODALE IMAGE -->
+<div class="modal-img" id="imgModal" role="dialog" aria-modal="true" aria-label="Image agrandie" aria-hidden="true">
+  <div class="modal-img__overlay" data-close-img="1"></div>
+  <div class="modal-img__panel">
+    <button class="modal-img__close" id="imgModalClose" data-close-img="1" aria-label="Fermer l'image agrandie"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="pointer-events:none"><path d="M1 1l12 12M13 1L1 13" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <img class="modal-img__img" id="modalImgEl" alt="">
+  </div>
+</div>
+
+<!-- MODALE FICHE -->
+<div class="modal-fiche" id="ficheModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="ficheTitleEl">
+  <div class="modal-fiche__overlay" id="ficheOverlay"></div>
+  <div class="modal-fiche__panel" id="fichePanel">
+    <button class="modal-fiche__close" id="ficheClose" aria-label="Fermer la fiche projet"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="pointer-events:none"><path d="M1 1l12 12M13 1L1 13" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <div id="ficheContent"></div>
+  </div>
+</div>
+
+<script>
+const PROJECTS = {
+  P01: {
+    tag: "Graphisme · Identité visuelle",
+    title: "P01 - Portail national de formation à distance : ENASIS",
+    contexte: "Pilotage de la refonte visuelle de la page d'accueil du portail national ENASIS, plateforme de formation à distance de l'ENSOSP, en ligne depuis 2016. La refonte a été conduite dans le cadre des contraintes techniques propres à l'environnement Moodle.",
+    objectif: "Moderniser l'identité visuelle : intégration des logos institutionnels (Ministère de l'Intérieur, ENSOSP, Sécurité Civile), amélioration de l'expérience utilisateur et de la navigation, avec notamment l'ajout d'un bouton « Connexion » développé en HTML/CSS.",
+    public: "Tous les sapeurs-pompiers en formation, incluant le Service de Santé et de Secours Médical (SSSM), issus des 53 départements conventionnés à ce jour, 137K utilisateurs.",
+    demarche: ["Recueil des besoins utilisateurs : réunion formelle avec le groupe de travail pluridisciplinaire (1 cheffe de service, 1 ingénieur pédagogique, 2 administrateurs) pour identifier les usages existants, les dysfonctionnements perçus et les axes d'amélioration attendus", "Analyse de l'existant et diagnostic : identification des manques visuels et fonctionnels, repérage des contraintes techniques de l'environnement Moodle (aucune modification du code natif autorisée)", "Conception de la nouvelle identité visuelle sur la base du diagnostic établi", "Création des éléments graphiques vectoriels (logos institutionnels, mise en page, hiérarchie visuelle)", "Intégration HTML/CSS : amélioration de la navigation et développement du bouton de connexion comme contournement technique validé", "Présentation et validation du portail refondu en réunion formelle avec le groupe de travail avant mise en production"],
+    outils: ["Adobe Illustrator", "Adobe Photoshop", "HTML / CSS", "Moodle"],
+    recommandation: "Diagnostic établi à partir de l'analyse de l'existant et des retours du groupe de travail (1 cheffe de service, 1 ingénieur pédagogique, 2 administrateurs) : L’interface gagnait à développer une identité visuelle plus affirmée et plus actuelle, l'acronyme ENASIS n'était pas explicité, le pilotage par l'ENSOSP n'était pas mentionné, les logos institutionnels (Ministère de l'Intérieur, Sécurité Civile) étaient absents, et le bouton de connexion, pourtant point d'entrée principal de la plateforme, était quasi invisible. Recommandation retenue : refonte complète de l'identité visuelle avec intégration des marqueurs institutionnels, clarification de l'acronyme et mise en valeur de l'organisme pilote. Contrainte technique identifiée : toute modification du code natif Moodle étant interdite, le bouton Connexion a été développé en HTML/CSS comme contournement technique, intégré sans toucher au coeur du système. Cette solution a été validée par le groupe de travail avant mise en production.",
+    resultat: "Amélioration sensible de l'expérience utilisateur sur le portail national, saluée par de forts retours positifs des administrateurs et utilisateurs des 53 départements conventionnés.",
+    competences: ["Pilotage d'un groupe de travail", "Analyse d'un besoin de communication visuelle", "Conception UI/UX centrée utilisateur", "Conception graphique vectorielle", "Intégration web (HTML/CSS) sous contrainte CMS", "Recommandation stratégique formalisée (diagnostic, solution, validation)"]
+  },
+  P02: {
+    tag: "Graphisme · Modélisation 3D",
+    title: "P02 - Plan 3D des salles de formation",
+    contexte: "Étude et conception d'une solution de repérage visuel destinée aux stagiaires qui naviguent dans le complexe de salles dédié à la gestion de crise.",
+    objectif: "Permettre aux stagiaires de s'orienter rapidement et intuitivement dans l'environnement de formation, en représentant fidèlement les espaces et leurs fonctions.",
+    public: "Officiers de sapeurs-pompiers en formation à l'ENSOSP (chefs de site, chefs de colonne).",
+    demarche: ["Recueil du besoin : demande formelle du département en charge des compétences formation, avec un cahier des charges précis : restituer l'espace de formation pour permettre l'orientation autonome des stagiaires dans le complexe de 38 salles", "Relevé de terrain : exploitation des plans d'architecte existants complétés par des mesures sur place pour garantir la fidélité de la représentation", "Modélisation 3D de l'ensemble du complexe (38 salles) avec SketchUp, en restituant les fonctions et la disposition réelle des espaces", "Mise en page vectorielle et production du plan final avec Adobe Illustrator, intégrant la légende et les repères d'orientation", "Validation du rendu par le responsable de formation avant production définitive", "Intégration du plan aux supports de formation et impression grand format sur plaque métallique (2 m x 1 m) pour affichage permanent en salle CS"],
+    outils: ["SketchUp", "Adobe Illustrator"],
+    resultat: "Plan 3D validé par le responsable de formation, affiché en permanence dans la salle CS sur plaque métallique (2 m x 1 m) et intégré aux supports de formation. Document utilisé quotidiennement par les stagiaires et les formateurs, avec retours de satisfaction exprimés par les deux publics.",
+    competences: ["Recueil et analyse d'un besoin de signalétique pédagogique (cahier des charges formalisé)", "Relevé de terrain et exploitation de plans d'architecte", "Modélisation 3D d'un espace existant (38 salles)", "Rendu vectoriel et mise en page technique", "Validation d'un livrable avec le commanditaire", "Production d'un document destiné à un usage institutionnel quotidien"]
+  },
+  P03: {
+    tag: "Graphisme · Identité visuelle",
+    title: "P03 - Création de blasons et logos",
+    contexte: "Mission de pilotage pour la création des visuels des différentes unités constituant le corps des sapeurs-pompiers du Doubs.",
+    objectif: "Créer un emblème fédérateur pour chaque unité, renforçant le sentiment d'appartenance et la cohésion au sein du service.",
+    public: "L'ensemble des sapeurs-pompiers du département du Doubs.",
+    demarche: ["Recueil des besoins utilisateurs : entretiens individuels avec les chefs de chacune des 8 unités concernées (secours en milieu périlleux, plongeurs, risques chimiques, feux de forêts, sauveteur animalier, centre d'appel 18, unité cynotechnique, système de communication). Chaque entretien visait à identifier les valeurs, symboles et références propres à l'unité, formalisés dans un cahier des charges fonctionnel par unité", "Réalisation de moodboards graphiques afin de traduire visuellement les valeurs, symboles, couleurs, textures et références identitaires des visuels réalisés.", "Conception de maquettes graphiques par unité en tenant compte des contraintes budgétaires identifiées", "Élaboration d'un montage financier avec les amicales des centres de secours pour rendre le projet réalisable", "Validation progressive des maquettes par les parties prenantes (chefs d'unités, responsables hiérarchiques)", "Production des fichiers définitifs et livraison"],
+    moodboards: [
+      { label: "Voir ici le moodboard de l'écusson de l'état major", pdf: "docs/moodboard_ecusson_etat_major_SDIS25.pdf" },
+      { label: "Voir ici le moodboard de l'écusson du SMPM", pdf: "docs/moodboard_ecusson_smpm.pdf" },
+    ],
+    outils: ["Adobe Illustrator", "Adobe Animate", "Adobe Photoshop"],
+    resultat: "Attribution d'un insigne à chaque sapeur-pompier du département.",
+    semiotique: "docs/analyse_semiotique_p03.pdf",
+    competences: ["Créativité et respect d'un cahier des charges", "Conception d'identités visuelles", "Gestion des contraintes budgétaires et montage financier", "Pilotage d'un processus de validation multi-parties"]
+  },
+  P04: {
+    tag: "Print · Communication institutionnelle",
+    title: "P04 - Offre de formations à la Gestion de crise",
+    contexte: "Création d'un catalogue de 24 pages destiné à promouvoir 8 modules de formation en gestion de crise auprès des acteurs institutionnels et des décideurs, sur commande du département gestion de crise de l'ENSOSP.",
+    objectif: "Produire un document de communication numérique clair et professionnel, valorisant les 8 formations proposées auprès d'un public décideur, sous format PDF diffusable.",
+    public: "Élus locaux, mairies, préfectures, officiers de sapeurs-pompiers, cadres de la fonction publique, gendarmerie, police nationale, Croix Rouge.",
+    demarche: ["Recueil du besoin : briefing par le chef du département gestion de crise, avec suivi de la responsable de formation tout au long du projet", "Structuration éditoriale du catalogue : organisation en 2 infographies de présentation générale des formations, suivies du détail de chacune des 8 formations sur une page dédiée", "Conception graphique et mise en page : production des infographies de synthèse, mise en page des fiches formations individuelles, intégration des visuels", "Processus de validation en 4 cycles : soumission successive du document à la responsable de formation, intégration des retours et corrections à chaque itération jusqu'à la version définitive", "Choix du format PDF pour la diffusion, décision motivée par une logique d'éco-conception (suppression de l'impression physique) et de facilité de mise à jour"],
+    outils: ["Adobe InDesign", "Adobe Illustrator", "Adobe Animate", "Adobe Photoshop"],
+    resultat: "Document de 24 pages en format PDF, validé après 4 cycles de révision. Diffusé en prospection auprès des communes et institutions partenaires par le département gestion de crise de l'ENSOSP.",
+    competences: ["Recueil et analyse d'un besoin de communication institutionnelle", "Conception éditoriale structurée (2 infographies de synthèse + 8 fiches détail)", "Conception graphique et infographie print/PDF", "Gestion d'un processus de validation multi-cycles (4 itérations)", "Éco-conception documentaire (format numérique privilégié à l'impression)"]
+  },
+  P05: {
+    tag: "Print · Document technique",
+    title: "P05 - Guide opérationnel ENSOSP : Assistant de sécurité",
+    contexte: "Pilotage de la création d'un guide technique complet pour les assistants sécurité du plateau technique de Vitrolles (ENSOSP). La mission consistait à rassembler l'ensemble des éléments destinés à l'assistant sécurité pour l'utilisation des simulateurs, avec une contrainte forte : un document maintenable en autonomie, sans dépendance à un logiciel spécialisé.",
+    objectif: "Clarifier les missions, règles et procédures de sécurité pour les assistants opérant sur le plateau technique de formation, en couvrant la totalité des installations de simulation.",
+    public: "Assistants sécurité et formateurs de l'ENSOSP.",
+    demarche: ["Recueil des besoins : commande formelle du chef du plateau technique, réunion de cadrage avec objectifs assignés. Contexte de création intégrale : aucun document de référence existant sur le sujet, documentation éparse et insuffisante, le guide a été conçu de zéro", "Identification des missions et risques spécifiques à chaque simulateur par consultation directe des formateurs et analyse des équipements présents sur le plateau (pavillon, bâtiment, zone urbaine, PME, risque technologique, accident routier, etc.)", "Réalisation de l'ensemble des plans 3D et 2D de toutes les installations de simulation", "Rédaction, création des schémas pédagogiques et mise en page du guide complet", "Diffusion : transmission lors des formations et briefings aux assistants sécurité"],
+    outils: ["Adobe Illustrator", "Adobe Animate", "Adobe Photoshop", "Adobe Lightroom", "SketchUp", "PowerPoint"],
+    resultat: "Guide de 60 pages, distribué en version PDF et imprimée.",
+    competences: ["Analyse d'un besoin de communication technique", "Modélisation 3D et production de plans techniques", "Conception de support pédagogique", "Production d'infographies et schémas techniques", "Gestion de la maintenabilité documentaire"]
+  },
+  P06: {
+    tag: "Print · Document technique",
+    title: "P06 - Guides de manœuvres SDIS 25",
+    contexte: "Pilotage de la création de guides opérationnels pour la formation de l'ensemble des sapeurs-pompiers du Doubs aux manœuvres incendie et en milieu vicié. Un troisième guide est en cours d'élaboration sur la ventilation par pression positive (VPP).",
+    objectif: "Former 3 000 sapeurs-pompiers du département grâce à des guides clairs, autonomes et reproductibles.",
+    public: "L'ensemble des sapeurs-pompiers et formateurs du SDIS 25.",
+    demarche: ["Analyse du besoin : identification des manœuvres à couvrir (incendie + milieu vicié)", "Pilotage d'un groupe de travail technique", "Structuration de deux guides opérationnels", "Rédaction, mise en page pédagogique et diffusion"],
+    outils: ["Adobe Illustrator", "Adobe Animate", "Adobe Photoshop", "Adobe Lightroom", "PowerPoint"],
+    resultat: "Deux guides de 100 pages chacun, imprimés et diffusés auprès de tous les sapeurs-pompiers du département.",
+    competences: ["Pilotage et animation d'un groupe de travail", "Conception de supports pédagogiques", "Production d'infographies techniques", "Gestion de projet documentaire"]
+  },
+  P07: {
+    tag: "Vidéo · Motion design",
+    title: "P07 - 64e cross national 2025 des sapeurs-pompiers de France",
+    contexte: "Création d'un film de présentation du département du Doubs, organisateur de la 64e édition du Cross national des sapeurs-pompiers de France. Le budget alloué s’élève à 2 500 €, comprenant les frais de déplacement pour la captation d’images sur l’ensemble du département (utilisation d’un appareil photo/vidéo – APN – et prises de vue par drone), l’acquisition de petit matériel (cartes SD, accessoires), ainsi que l’amortissement et la participation aux coûts du matériel utilisé.",
+    objectif: "Présenter le site d'accueil aux instances nationales et aux compétiteurs, valoriser le territoire et susciter l'envie de participer.",
+    public: "L'ensemble des sapeurs-pompiers de France.",
+	
+    demarche: ["Élaboration du message et du fil directeur narratif", "Prise de vues terrain (photo et vidéo)", "Pilotage drone pour les plans aériens", "Montage vidéo et production du motion design", "Diffusion sur la chaîne YouTube officielle du SDIS 25"],
+    presentationOrale: "Restitution du projet audiovisuel auprès du directeur Départemental, des officiers organisateurs, du comité d'organisation, référents des activités physiques et sportives : présentation du parti pris narratif, justification des choix visuels de la piste son et du rythme de montage, échanges autour des objectifs de valorisation territoriale et validation du livrable avant diffusion officielle.",
+    pdfReco: "docs/p07_recommandation_marketing.pdf",
+
+	outils: ["Adobe Premiere Pro", "Adobe Illustrator", "Adobe Animate", "Adobe Photoshop", "Adobe Lightroom"],
+    resultat: "Vidéo diffusée sur la chaîne YouTube officielle du SDIS 25 et lors des communications institutionnelles liées à l'événement.",
+    competences: ["Prise de vue vidéo et pilotage de drone", "Montage vidéo professionnel", "Production de motion design animé", "Pilotage d'un projet audiovisuel sous contrainte budgétaire"]
+  },
+  P08: {
+    tag: "Vidéo · Motion design",
+    title: "P08 - Présentation du Portail national de formation à distance : ENASIS",
+    contexte: "Production d'un court-métrage de présentation du Portail national de formation à distance ENASIS, basé sur un environnement Moodle.",
+    objectif: "Présenter le portail de formation à distance propre à tous les sapeurs-pompiers de France, des Services de Santé et de Secours Médical (SSSM) rattachés à la sécurité civile et des services incendies à l'international (Espagne, Taïwan, Belgique, Indonésie...). A ce jour 53 départements sont conventionnés, totalisant 137 000 utilisateurs.",
+    public: "Sapeurs-pompiers français, services de santé et soldats du feu étrangers.",
+    demarche: [
+      "Renouvellement du support vidéo existant : réunion formelle avec un groupe de travail pluridisciplinaire (1 cheffe de service, 1 ingénieur pédagogique, 2 administrateurs) pour identifier les modifications à apporter et les nouveautés à inclure.",
+      "Analyse de l'existant et diagnostic : réduire la durée de la vidéo à 2 minutes 30 secondes.",
+      "Constitution d'un storyboard avec les séquences à réaliser.",
+      "Post-production : montage vidéo, construction des séquences en motion design, intégration de la bande son.",
+      "Présentation de la maquette vidéo au groupe de travail en présence du chef de division.",
+      "Ajustement du contenu des séquences.",
+      "Présentation finale au groupe de travail pour validation.",
+      "Mise en ligne sur le compte YouTube officiel de l'ENSOSP et le portail ENASIS."
+    ],
+    storyboard: "docs/p08_storyboard.pdf",
+    presentation: "Présentation du court-métrage final au groupe de travail pluridisciplinaire : 1 chef de division, 1 cheffe de service, 1 ingénieur pédagogique, 2 administrateurs. Explication des choix de scénarisation (co-écrit avec le premier groupe de travail). Prise en compte des retours du commanditaire avant validation finale et diffusion publique (YouTube et portail ENASIS).",
+    outils: ["Adobe Premiere Pro", "Adobe Illustrator", "Adobe Animate"],
+    resultat: "Court-métrage de 2 minutes 45 secondes diffusé sur la chaîne officielle YouTube de l'ENSOSP et sur le portail ENASIS. La vidéo permet au service de disposer d'un support audiovisuel professionnel à destination de leurs interlocuteurs. Retour de satisfaction exprimé par le Directeur de l'ENSOSP, des officiers de la chaîne de commandement et par le service.",
+    competences: ["Pilotage d'un groupe de travail (2 réunions de cadrage)", "Élaboration et validation d'un storyboard en concertation", "Anticipation et préparation logistique d'un tournage", "Production audiovisuelle (tournage 1 journée) et motion design", "Communication institutionnelle à destination d'un public professionnel (300 entreprises)"]
+  },
+  P09: {
+    tag: "Vidéo · Drone",
+    title: "P09 - Témoignage aérien de la pandémie de Covid-19",
+    contexte: "Commande de la Ville de Pontarlier pour la création d'un court-métrage destiné à conserver une trace historique de la période Covid-19 sur la commune, à travers le regard singulier du drone. Photographe et vidéaste reconnu, je collabore avec la commune de Pontarlier depuis de nombreuses années. Cette relation de confiance a conduit à me confier la réalisation de ce projet d'envergure, à forte dimension mémorielle. Télépilote de drone depuis 2013 (référencé DGAC NoED42), je dispose des compétences techniques et réglementaires nécessaires pour mener à bien ce type de captation aérienne dans un cadre professionnel.",
+    objectif: "Restituer visuellement et de façon artistique une période inédite : un territoire à l'arrêt saisi d'en haut. La contrainte majeure était de rendre palpable l'ambiance d'une ville déserte, entre silence et immobilité.",
+    public: "Population de la commune, élus, administrés.",
+    demarche: ["Définition du concept : capturer le vide et l'immobilité par des plans aériens exclusifs", "Constitution du dossier réglementaire et demande d'autorisation de vol auprès de la préfecture (déclaration via le portail AlphaTango, scénario S3 : vol en zone peuplée)", "Obtention des autorisations de sortie du domicile auprès des services de police dans le cadre des restrictions de déplacement liées à l'état d'urgence sanitaire (attestation dérogatoire, justificatif de mission)", "Planification des vols et prises de vues", "Montage du film"],
+    veille: "L'adoption du drone dès 2013, bien avant sa généralisation dans la communication institutionnelle, résulte d'une démarche de veille active et continue sur les technologies de captation aérienne. Cette veille s'appuie sur des sources spécialisées et complémentaires : le portail réglementaire AlphaTango (DGAC) pour suivre les évolutions des règles de vol, le site helicomicro.com et le forum djiphantom-forum.com pour la veille technique et les retours d'usage de la communauté des pilotes, ainsi que le site constructeur DJI pour les mises à jour matérielles et logicielles. C'est cette pratique régulière de veille qui a permis d'anticiper les changements réglementaires du scénario S3 (vol en zone urbaine) et d'adapter les équipements en conséquence, garantissant des captations légales et professionnelles en toutes circonstances, y compris dans le contexte exceptionnel des restrictions sanitaires de 2020.",
+    outils: ["Drone DJI (télépilote DGAC NoED42)", "Adobe Premiere Pro", "Adobe Illustrator", "Adobe Animate"],
+    resultat: "Court-métrage diffusé par la Ville de Pontarlier, constituant un document mémoriel unique sur la période du confinement vue depuis les airs.",
+    competences: ["Pilotage de drone (télépilote DGAC depuis 2013)", "Gestion des démarches réglementaires de vol en zone urbaine", "Veille technologique et réglementaire appliquée (drone)", "Sensibilité documentaire et artistique", "Montage vidéo"]
+  }
+};
+
+function renderFiche(id) {
+  const p = PROJECTS[id];
+  if (!p) return `<div class="fiche-empty">Fiche en cours de rédaction, revenez bientôt !</div>`;
+  let html = '';
+  if (p.tag) html += `<div class="fiche-tag">${p.tag}</div>`;
+  html += `<div class="fiche-title" id="ficheTitleEl">${p.title}</div><hr class="fiche-divider">`;
+  const block = (label, content) => `<div class="fiche-block"><div class="fiche-label">${label}</div>${content}</div>`;
+  if (p.contexte) html += block('Contexte &amp; besoin', `<div class="fiche-text">${p.contexte}</div>`);
+  if (p.objectif) html += block('Objectif', `<div class="fiche-text">${p.objectif}</div>`);
+  if (p.public) html += block('Public cible', `<div class="fiche-text">${p.public}</div>`);
+  if (p.demarche && p.demarche.length) {
+    const moodblocks = (p.moodboards && p.moodboards.length)
+      ? p.moodboards.map(m => `<a class="fiche-ux-pdf" href="${m.pdf}" target="_blank" rel="noopener" style="color:#1d4ed8;display:flex;align-items:center;gap:7px;margin-top:4px;"><img src="images/pdf.png" alt="" aria-hidden="true" style="width:16px;height:16px;object-fit:contain;flex-shrink:0;">${m.label}</a>`).join('')
+      : '';
+    const storyboardBlock = p.storyboard
+      ? `<a class="fiche-ux-pdf" href="${p.storyboard}" target="_blank" rel="noopener" aria-label="Voir le storyboard (PDF, nouvel onglet)" style="color:#1d4ed8;display:flex;align-items:center;gap:7px;margin-top:4px;"><img src="images/pdf.png" alt="" aria-hidden="true" style="width:16px;height:16px;object-fit:contain;flex-shrink:0;">Voir le storyboard ici</a>`
+      : '';
+    const steps = p.demarche.map((s,i) => {
+      const extra = (i === 1 && moodblocks) ? `<div style="display:flex;flex-direction:column;margin-top:4px;">${moodblocks}</div>` : '';
+      const sbExtra = (i === 2 && storyboardBlock) ? `<div style="display:flex;flex-direction:column;margin-top:4px;">${storyboardBlock}</div>` : '';
+      return `<li data-n="${i+1}"><div>${s}${extra}${sbExtra}</div></li>`;
+    }).join('');
+    html += block('Démarche de conception', `<ol class="fiche-steps">${steps}</ol>`);
+  }
+  
+if (p.presentation) html += `<div class="fiche-block"><div class="fiche-label">Présentation orale au commanditaire</div><div class="fiche-text">${p.presentation}</div></div>`;
+  if (p.veille) html += `<div class="fiche-block"><div class="fiche-veille-label">Veille technologique</div><div class="fiche-veille-text">${p.veille}</div></div>`;
+
+  if (p.outils && p.outils.length) {
+    const pills = p.outils.map(o=>`<span class="fiche-pill">${o}</span>`).join('');
+    html += block('Outils utilisés', `<div class="fiche-pills">${pills}</div>`);
+  }
+  if (p.recommandation) html += `<div class="fiche-block"><div class="fiche-veille-label">Recommandation stratégique</div><div class="fiche-veille-text">${p.recommandation}</div></div>`;
+
+if (p.presentationOrale) html += `<div class="fiche-block"><div class="fiche-label" style="color:#1d4ed8;">PRÉSENTATION ORALE AU COMMANDITAIRE</div><div class="fiche-text">${p.presentationOrale}</div></div>`;
+  if (p.pdfReco) html += `<div class="fiche-block"><div class="fiche-veille-label">Recommandation marketing</div><a class="fiche-ux-pdf" href="${p.pdfReco}" target="_blank" rel="noopener" aria-label="Voir la recommandation marketing (PDF, nouvel onglet)" style="color:#1d4ed8;"><img src="images/pdf.png" alt="" aria-hidden="true" style="width:16px;height:16px;object-fit:contain;flex-shrink:0;">Voir la recommandation marketing (PDF)</a></div>`;  
+  
+  if (p.resultat) html += block('Résultat &amp; diffusion', `<div class="fiche-text">${p.resultat}</div>`);
+  if (p.semiotique) html += `<div class="fiche-block"><div class="fiche-label">Analyse sémiotique</div><a class="fiche-ux-pdf" href="${p.semiotique}" target="_blank" rel="noopener" aria-label="Voir l'analyse sémiotique (PDF, nouvel onglet)" style="color:#1d4ed8;"><img src="images/pdf.png" alt="" aria-hidden="true" style="width:16px;height:16px;object-fit:contain;flex-shrink:0;">Voir l'analyse sémiotique</a></div>`;
+  if (p.competences && p.competences.length) {
+    const comps = p.competences.map(c=>`<span class="fiche-competence">${c}</span>`).join('');
+    html += block('Compétences mobilisées', `<div class="fiche-competences">${comps}</div>`);
+  }
+  return html;
+}
+
+/* ---- Modale image ---- */
+const imgModal    = document.getElementById('imgModal');
+const modalImgEl  = document.getElementById('modalImgEl');
+const imgModalClose = document.getElementById('imgModalClose');
+let imgTrigger = null;
+
+function openImgModal(src, alt, trigger) {
+  modalImgEl.src = src;
+  modalImgEl.alt = alt || '';
+  imgModal.classList.add('is-open');
+  imgModal.setAttribute('aria-hidden', 'false');
+  imgTrigger = trigger || null;
+  requestAnimationFrame(() => imgModalClose.focus());
+}
+function closeImgModal() {
+  imgModal.classList.remove('is-open');
+  imgModal.setAttribute('aria-hidden', 'true');
+  modalImgEl.src = '';
+  modalImgEl.alt = '';
+  if (imgTrigger) imgTrigger.focus();
+}
+
+// Trap focus – modale image
+imgModal.addEventListener('keydown', e => {
+  if (!imgModal.classList.contains('is-open')) return;
+  if (e.key === 'Escape') { closeImgModal(); return; }
+  if (e.key === 'Tab') {
+    e.preventDefault();
+    imgModalClose.focus();
+  }
+});
+
+document.addEventListener('click', e => {
+  const a = e.target.closest('.openImgModal');
+  if (a) { e.preventDefault(); openImgModal(a.dataset.img, a.dataset.alt, a); return; }
+  if (e.target.dataset && e.target.dataset.closeImg === '1') closeImgModal();
+});
+
+/* ---- Modale fiche ---- */
+const ficheModal   = document.getElementById('ficheModal');
+const ficheContent = document.getElementById('ficheContent');
+const fichePanel   = document.getElementById('fichePanel');
+let ficheTrigger = null;
+
+function openFiche(id, trigger) {
+  ficheContent.innerHTML = renderFiche(id);
+  ficheModal.classList.add('is-open');
+  ficheModal.setAttribute('aria-hidden', 'false');
+  fichePanel.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+  ficheTrigger = trigger || null;
+  requestAnimationFrame(() => document.getElementById('ficheClose').focus());
+}
+function closeFiche() {
+  ficheModal.classList.remove('is-open');
+  ficheModal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+  if (ficheTrigger) ficheTrigger.focus();
+}
+
+document.querySelectorAll('.btn-fiche').forEach(btn => {
+  btn.addEventListener('click', () => openFiche(btn.dataset.proj, btn));
+});
+
+document.getElementById('ficheClose').addEventListener('click', closeFiche);
+document.getElementById('ficheOverlay').addEventListener('click', closeFiche);
+
+// Trap focus – modale fiche
+ficheModal.addEventListener('keydown', e => {
+  if (!ficheModal.classList.contains('is-open')) return;
+  if (e.key === 'Escape') { closeFiche(); return; }
+  if (e.key === 'Tab') {
+    const focusable = ficheModal.querySelectorAll('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])');
+    const first = focusable[0];
+    const last  = focusable[focusable.length - 1];
+    if (e.shiftKey) {
+      if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+    } else {
+      if (document.activeElement === last)  { e.preventDefault(); first.focus(); }
+    }
+  }
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (ficheModal.classList.contains('is-open')) closeFiche();
+    if (imgModal.classList.contains('is-open')) closeImgModal();
+  }
+});
+</script>
+<script>
+  (function() {
+
+    /* =====================================================
+       REGLAGE DU MOUVEMENT : modifier la valeur de SPEED
+       0.2 = tres lent   |   0.5 = lent   |   0.9 = moyen
+       1.5 = rapide      |   2.5 = tres rapide
+    ===================================================== */
+    var SPEED = 0.9;
+
+    var canvas = document.getElementById('bokeh-canvas');
+    var ctx = canvas.getContext('2d');
+    var W = 0, H = 0;
+
+    function resize() {
+      W = window.innerWidth;
+      H = window.innerHeight;
+      canvas.width = Math.round(W * window.devicePixelRatio);
+      canvas.height = Math.round(H * window.devicePixelRatio);
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    }
+
+    resize();
+    window.addEventListener('resize', resize);
+
+    var COLORS = [
+      'rgba(255,100,120,',
+      'rgba(80,160,255,',
+      'rgba(60,220,180,',
+      'rgba(255,200,60,',
+      'rgba(180,80,255,',
+      'rgba(255,140,60,',
+      'rgba(60,200,255,',
+      'rgba(255,80,180,'
+    ];
+
+    var COUNT = 18;
+    var bubbles = [];
+
+    function initBubbles() {
+      bubbles = [];
+      for (var i = 0; i < COUNT; i++) {
+        bubbles.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          r: Math.random() * 120 + 40,
+          vx: (Math.random() - 0.5) * 2 * SPEED,
+          vy: (Math.random() - 0.5) * 2 * SPEED,
+          color: COLORS[Math.floor(Math.random() * COLORS.length)],
+          alpha: Math.random() * 0.15 + 0.06,
+          phase: Math.random() * Math.PI * 2,
+          pulseSpeed: Math.random() * 0.004 + 0.002
+        });
+      }
+    }
+
+    initBubbles();
+
+    var t = 0;
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+
+      for (var i = 0; i < bubbles.length; i++) {
+        var b = bubbles[i];
+        var pulse = 1 + 0.06 * Math.sin(t * b.pulseSpeed * 60 + b.phase);
+        var r = b.r * pulse;
+
+        var grad = ctx.createRadialGradient(b.x, b.y, r * 0.1, b.x, b.y, r);
+        grad.addColorStop(0, b.color + (b.alpha * 1.4) + ')');
+        grad.addColorStop(0.5, b.color + b.alpha + ')');
+        grad.addColorStop(1, b.color + '0)');
+
+        ctx.filter = 'blur(22px)';
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, r, 0, Math.PI * 2);
+        ctx.fillStyle = grad;
+        ctx.fill();
+        ctx.filter = 'none';
+
+        b.x += b.vx;
+        b.y += b.vy;
+        if (b.x < -b.r)    b.x = W + b.r;
+        if (b.x > W + b.r) b.x = -b.r;
+        if (b.y < -b.r)    b.y = H + b.r;
+        if (b.y > H + b.r) b.y = -b.r;
+      }
+
+      t++;
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+  })();
+</script>
+</body>
+</html>

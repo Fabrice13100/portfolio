@@ -1,0 +1,1001 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Développement Web : Fabrice Parriaux, Technicien Multimédia</title>
+  <meta name="description" content="Projets de développement web de Fabrice Parriaux : sites WordPress, intégration HTML/CSS, interface Three.js 3D, application PHP et MySQL.">
+  <meta name="author" content="Fabrice Parriaux">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Développement Web : Fabrice Parriaux, Technicien Multimédia">
+  <meta property="og:description" content="Projets de développement web de Fabrice Parriaux : sites WordPress, intégration HTML/CSS, interface Three.js 3D, application PHP et MySQL.">
+  <meta property="og:locale" content="fr_FR">
+
+  <style>
+    :root{
+      --bg:#ffffff;--text:#0c0c0c;--stroke:#d8dbe2;
+      --shadow:0 18px 50px rgba(0,0,0,.08);--r:10px;
+      --neonBorder:rgba(0,168,255,.45);--neonGlow1:rgba(0,168,255,.25);--neonGlow2:rgba(0,168,255,.12);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#f8f8ff;color:var(--text);}
+    .wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:26px 26px 100px;min-height:100vh;display:flex;flex-direction:column;gap:22px;}
+
+    /* BREADCRUMB */
+    .breadcrumb{font-size:13px;color:#6b7280;display:flex;align-items:center;gap:6px;list-style:none;}
+    .breadcrumb a{color:#6b7280;text-decoration:none;}
+    .breadcrumb a:hover,.breadcrumb a:focus-visible{color:#0c0c0c;text-decoration:underline;outline:2px solid var(--neonBorder);outline-offset:2px;border-radius:2px;}
+    .breadcrumb .sep{color:#d8dbe2;}
+    .breadcrumb [aria-current="page"]{color:#0c0c0c;font-weight:500;}
+
+    /* HEADER */
+    .pageTitle{font-size:22px;font-weight:550;text-align:center;margin:0;letter-spacing:.2px;}
+
+    .section{margin-top:10px;border:1px solid var(--stroke);border-radius:var(--r);background:linear-gradient(180deg,#ffffff,#f7f8fa);box-shadow:var(--shadow);padding:18px 18px 20px;}
+    .sectionHead{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+    .sectionHead h2{margin:0;font-size:18px;font-weight:600;}
+    .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;}
+
+    .tile{
+      border:1px solid var(--stroke);border-radius:10px;background:#fff;overflow:hidden;
+      box-shadow:0 10px 24px rgba(0,0,0,.05);display:flex;flex-direction:column;
+      text-decoration:none;color:inherit;min-height:160px;
+    }
+
+    /* image dans les tiles avec lien séparé */
+    .tile-img-link{display:block;overflow:hidden;position:relative;}
+    .tile-img-link:focus-visible{outline:2px solid var(--neonBorder);outline-offset:2px;}
+    .tile-img-link:focus:not(:focus-visible){outline:none;}
+    .tile img{width:100%;height:160px;object-fit:cover;object-position:top;display:block;background:#e9ecf2;transition:transform .25s ease;}
+    .tile-img-link:hover img,.tile-img-link:focus-visible img{transform:scale(1.03);}
+
+    .tile .cap{padding:10px 12px;font-size:14px;line-height:1.35;flex:1;}
+
+    /* Social tiles */
+    .social-preview{width:100%;height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;flex-shrink:0;}
+    .social-preview--fb{background:linear-gradient(135deg,#1877f2 0%,#0a5cc7 100%);}
+    .social-preview--ig{background:linear-gradient(135deg,#f58529 0%,#dd2a7b 50%,#8134af 100%);}
+    .social-logo{width:42px;height:42px;opacity:.95;filter:drop-shadow(0 2px 6px rgba(0,0,0,.25));}
+    .social-handle{color:#fff;font-size:14px;font-weight:600;letter-spacing:.3px;}
+    .social-sub{color:rgba(255,255,255,.75);font-size:12px;}
+
+    /* Bouton fiche projet */
+    .btn-fiche-wrap{
+      display:flex;align-items:center;gap:8px;
+      padding:10px 12px 12px;border-top:1px solid var(--stroke);
+      background:#fafbfd;flex-shrink:0;
+    }
+    .proj-badge{
+      font-size:13px;font-weight:600;color:#1d4ed8;
+      flex-shrink:0;letter-spacing:.04em;
+    }
+    .btn-fiche-wrap .btn-fiche{width:auto;flex:1;}
+    .status-wip{
+      position:absolute;top:0;left:0;right:0;
+      background:rgba(194,65,12,.88);color:#fff;
+      font-size:11px;font-weight:500;text-align:center;
+      padding:5px 8px;letter-spacing:.02em;
+      pointer-events:none;
+    }
+    .btn-fiche{
+      width:80%;padding:8px 0;
+      background:#56b4ef;border:1.5px solid #56b4ef;border-radius:5px;
+      font-size:13px;font-weight:600;color:#fff;cursor:pointer;text-align:center;
+      transition:background .18s,color .18s,border-color .18s,box-shadow .18s,transform .12s;
+      letter-spacing:.3px;
+    }
+    .btn-fiche:hover{
+      background:#fff;color:#1d4ed8;border-color:#1d4ed8;
+      box-shadow:0 4px 14px rgba(29,78,216,.18);
+      transform:translateY(-1px);
+    }
+    .btn-fiche:focus-visible{outline:2px solid var(--neonBorder);outline-offset:2px;}
+    .btn-fiche:focus:not(:focus-visible){outline:none;}
+    .btn-capture{display:inline-flex;align-items:center;margin-top:0;padding:8px 12px;font-size:13px;font-weight:600;color:#fff;background:linear-gradient(135deg,#e1306c,#833ab4);border:none;border-radius:5px;cursor:pointer;text-decoration:none;transition:opacity .15s;letter-spacing:.3px;white-space:nowrap;}
+    .btn-capture:hover{opacity:.85;}
+    .btn-capture:focus-visible{outline:2px solid #e1306c;outline-offset:2px;}
+    .btn-capture:focus:not(:focus-visible){outline:none;}
+
+    /* MODALE FICHE */
+    /* MODALE IMAGE */
+    .modal-img{position:fixed;inset:0;display:none;z-index:10000;}
+    .modal-img.is-open{display:flex;align-items:center;justify-content:center;}
+    .modal-img__overlay{position:absolute;inset:0;background:rgba(0,0,0,.55);}
+    .modal-img__panel{position:relative;z-index:1;width:fit-content;max-width:min(96vw,1200px);max-height:92vh;background:#fff;border-radius:14px;overflow:hidden;border:1px solid rgba(216,219,226,.9);box-shadow:0 30px 80px rgba(0,0,0,.25);}
+    .modal-img__img{display:block;max-width:96vw;max-height:92vh;}
+    .modal-img__close{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:6px;background:#dc2626;border:none;font-size:18px;line-height:1;cursor:pointer;color:#fff;display:grid;place-items:center;transition:background .15s;user-select:none;-webkit-user-select:none;}
+    .modal-img__close:hover{background:#b91c1c;}
+    .modal-img__close:focus-visible{outline:2px solid #fca5a5;outline-offset:2px;}
+    .modal-img__close:focus:not(:focus-visible){outline:none;}
+    .modal-fiche{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;}
+    .modal-fiche.is-open{display:flex;}
+    .modal-fiche__overlay{position:absolute;inset:0;background:rgba(10,12,20,.6);backdrop-filter:blur(4px);}
+    .modal-fiche__panel{
+      position:relative;width:100%;max-width:720px;max-height:90vh;overflow-y:auto;
+      background:#fff;border-radius:18px;
+      box-shadow:0 30px 80px rgba(0,0,0,.22),0 0 0 1px rgba(0,0,0,.06);
+      padding:36px 36px 30px;
+      animation:slideUp .28s cubic-bezier(.22,.68,0,1.2);
+    }
+    @keyframes slideUp{from{opacity:0;transform:translateY(24px) scale(.97);}to{opacity:1;transform:translateY(0) scale(1);}}
+    .modal-fiche__close{position:absolute;top:14px;right:16px;width:32px;height:32px;border-radius:6px;background:#dc2626;border:none;font-size:18px;line-height:1;cursor:pointer;color:#fff;display:grid;place-items:center;transition:background .15s;user-select:none;-webkit-user-select:none;}
+    .modal-fiche__close:hover{background:#b91c1c;}
+    .modal-fiche__close:focus-visible{outline:2px solid #fca5a5;outline-offset:2px;border-radius:6px;}
+    .modal-fiche__close:focus:not(:focus-visible){outline:none;}
+
+    /* Contenu fiche */
+    .fiche-tag{display:inline-block;background:#f0f4ff;color:#1d4ed8;font-size:11px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-bottom:10px;}
+    .fiche-title{font-size:1.45rem;font-weight:700;color:#0a0c14;margin-bottom:22px;line-height:1.25;}
+    .fiche-block{margin-bottom:18px;}
+    .fiche-block:last-child{margin-bottom:0;}
+    .fiche-label{font-size:11px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:#1d4ed8;margin-bottom:5px;}
+    .fiche-text{font-size:14.5px;line-height:1.6;color:#334155;}
+    .fiche-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px;}
+    .fiche-pill{background:#f4f6fb;border:1px solid #dde3ef;color:#374151;font-size:12.5px;font-weight:500;padding:3px 10px;border-radius:20px;}
+    .fiche-steps{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:7px;}
+    .fiche-steps li{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;color:#334155;line-height:1.5;}
+    .fiche-steps li::before{content:attr(data-n);min-width:22px;height:22px;background:#eff3ff;color:#1d4ed8;border-radius:50%;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+    .fiche-competences{display:flex;flex-wrap:wrap;gap:6px;}
+    .fiche-competence{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;font-size:12.5px;font-weight:500;padding:3px 10px;border-radius:20px;}
+    .fiche-empty{font-size:13px;color:#94a3b8;font-style:italic;padding:8px 12px;background:#f8f9fa;border-radius:8px;border:1px dashed #d1d5db;}
+    .fiche-divider{border:none;border-top:1px solid #f1f3f7;margin:4px 0 18px;}
+
+    @media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+    @media(max-width:640px){
+      .grid{grid-template-columns:1fr;}
+      .modal-fiche__panel{padding:24px 20px 20px;}
+      .fiche-title{font-size:1.2rem;}
+    }
+  
+    /* BOKEH FOND */
+    #bokeh-canvas{
+      position:fixed;
+      inset:0;
+      width:100%;
+      height:100%;
+      z-index:0;
+      pointer-events:none;
+    }
+  
+.fiche-veille-label{font-size:11px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:#b45309;margin-bottom:5px;}
+.fiche-veille-text{font-size:14.5px;line-height:1.6;color:#334155;background:#fffbeb;border-left:3px solid #f59e0b;padding:10px 14px;border-radius:0 6px 6px 0;}
+.fiche-ux-label{font-size:11px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:#0e7490;margin-bottom:5px;}
+.fiche-ux-text{font-size:14.5px;line-height:1.6;color:#334155;background:#ecfeff;border-left:3px solid #06b6d4;padding:10px 14px;border-radius:0 6px 6px 0;}
+.fiche-ux-participants{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 4px;}
+.fiche-ux-participant{background:#f0fdff;border:1px solid #a5f3fc;border-radius:8px;padding:6px 10px;font-size:13px;color:#164e63;line-height:1.4;}
+.fiche-ux-participant strong{display:block;font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#0e7490;margin-bottom:2px;}
+.fiche-decision-label{font-size:11px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:#166534;margin-bottom:5px;}
+.fiche-decision-text{font-size:14.5px;line-height:1.6;color:#334155;background:#f0fdf4;border-left:3px solid #22c55e;padding:10px 14px;border-radius:0 6px 6px 0;}
+.fiche-decision-table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:4px;}
+.fiche-decision-table th{background:#dcfce7;color:#166534;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;padding:6px 10px;text-align:left;border-bottom:2px solid #86efac;}
+.fiche-decision-table td{padding:8px 10px;vertical-align:top;border-bottom:1px solid #d1fae5;color:#334155;line-height:1.5;}
+.fiche-decision-table tr:last-child td{border-bottom:none;}
+.fiche-decision-table td:first-child{font-weight:600;white-space:nowrap;color:#166534;width:28px;}
+.fiche-ux-pdf{display:inline-flex;align-items:center;gap:7px;margin-top:4px;margin-bottom:8px;font-size:13px;font-weight:600;color:#0e7490;text-decoration:none;letter-spacing:.1px;}
+.fiche-ux-pdf:hover{text-decoration:underline;}
+.fiche-ux-pdf:focus-visible{outline:2px solid var(--neonBorder);outline-offset:2px;border-radius:3px;}
+.fiche-ux-pdf:focus:not(:focus-visible){outline:none;}
+
+/* BLOC GITHUB dans fiche modale */
+.fiche-github{display:inline-flex;align-items:center;gap:7px;margin-top:10px;font-size:13.5px;color:#1d4ed8;text-decoration:none;letter-spacing:.1px;}
+.fiche-github:hover{text-decoration:underline;}
+.fiche-github:focus-visible{outline:2px solid var(--neonBorder);outline-offset:2px;border-radius:3px;}
+.fiche-github:focus:not(:focus-visible){outline:none;}
+.fiche-github svg{flex-shrink:0;}
+
+/* LOGIGRAMME dans fiche modale */
+.fiche-logigramme-wrap{margin-top:6px;}
+.fiche-logigramme{
+  display:block;width:100%;max-width:560px;
+  border-radius:8px;border:1px solid #dde3ef;
+  box-shadow:0 4px 18px rgba(0,0,0,.10);
+  cursor:zoom-in;
+  transition:box-shadow .18s,transform .18s;
+}
+.fiche-logigramme:hover{box-shadow:0 8px 28px rgba(0,0,0,.16);transform:scale(1.01);}
+.fiche-logigramme-caption{margin-top:7px;font-size:12px;color:#6b7280;font-style:italic;line-height:1.4;}
+
+/* ECO-CONCEPTION dans fiche modale */
+.fiche-eco{display:inline-flex;align-items:center;gap:6px;margin-top:6px;}
+.fiche-eco img{width:18px;height:18px;object-fit:contain;flex-shrink:0;}
+
+/* LIEN ANCRE FIGMA dans fiche modale */
+.fiche-figma-link{
+  display:inline-flex;align-items:center;gap:8px;
+  margin-top:6px;padding:9px 16px;
+  background:#1d4ed8;color:#fff;border-radius:6px;
+  font-size:13px;font-weight:600;text-decoration:none;letter-spacing:.2px;
+  transition:background .18s,box-shadow .18s,transform .12s;
+}
+.fiche-figma-link:hover{background:#1e40af;box-shadow:0 4px 14px rgba(29,78,216,.28);transform:translateY(-1px);}
+.fiche-figma-link:focus-visible{outline:2px solid var(--neonBorder);outline-offset:2px;border-radius:6px;}
+.fiche-figma-link:focus:not(:focus-visible){outline:none;}
+.fiche-figma-link svg{flex-shrink:0;}
+
+/* SECTION FIGMA EMBED */
+.figma-section{
+  scroll-margin-top:24px;
+  border:1px solid var(--stroke);border-radius:var(--r);
+  background:linear-gradient(180deg,#ffffff,#f7f8fa);
+  box-shadow:var(--shadow);padding:24px 24px 28px;
+}
+.figma-section__head{display:flex;align-items:flex-start;gap:12px;margin-bottom:6px;flex-wrap:wrap;}
+.figma-section__logo{
+  width:36px;height:36px;border-radius:8px;flex-shrink:0;
+  background:#1d4ed8;display:grid;place-items:center;
+}
+.figma-section__titles{flex:1;min-width:0;}
+.figma-section__title{font-size:17px;font-weight:700;color:#0a0c14;margin:0 0 3px;}
+.figma-section__sub{font-size:13px;color:#6b7280;line-height:1.4;margin:0;}
+.figma-section__meta{
+  display:flex;align-items:center;flex-wrap:wrap;gap:8px;
+  margin:14px 0 18px;
+}
+.figma-section__badge{
+  font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  padding:3px 10px;border-radius:20px;
+}
+.figma-section__badge--proto{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;}
+.figma-section__badge--ux{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;}
+.figma-section__badge--wip{background:#fff7ed;color:#c2410c;border:1px solid #fed7aa;}
+.figma-section__open{
+  margin-left:auto;
+  display:inline-flex;align-items:center;gap:6px;
+  padding:7px 14px;border-radius:6px;
+  background:#fff;border:1.5px solid #d1d5db;
+  font-size:12px;font-weight:600;color:#374151;
+  text-decoration:none;cursor:pointer;
+  transition:border-color .18s,color .18s,box-shadow .18s;
+}
+.figma-section__open:hover{border-color:#1d4ed8;color:#1d4ed8;box-shadow:0 2px 8px rgba(29,78,216,.12);}
+.figma-section__open:focus-visible{outline:2px solid var(--neonBorder);outline-offset:2px;border-radius:6px;}
+.figma-section__open:focus:not(:focus-visible){outline:none;}
+
+/* Wrapper responsive pour l'iframe Figma : chargement différé */
+.figma-embed-wrapper{
+  position:relative;width:100%;
+  padding-top:56.25%; /* ratio 16:9 */
+  border-radius:8px;overflow:hidden;
+  border:1px solid var(--stroke);
+  background:#0a0c14;
+  cursor:pointer;
+}
+/* Vignette (état initial) */
+.figma-embed-wrapper__thumb{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;object-position:top;
+  display:block;
+  border-radius:8px;
+  transition:opacity .2s;
+}
+.figma-embed-wrapper:hover .figma-embed-wrapper__thumb{opacity:.82;}
+/* Overlay sombre au survol */
+.figma-embed-wrapper__overlay{
+  position:absolute;inset:0;
+  background:rgba(10,12,20,.38);
+  border-radius:8px;
+  pointer-events:none;
+}
+/* Bouton play central */
+.figma-embed-wrapper__play{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  pointer-events:none;
+}
+.figma-embed-wrapper__play-btn{
+  width:64px;height:64px;border-radius:50%;
+  background:rgba(255,255,255,.95);
+  display:grid;place-items:center;
+  box-shadow:0 4px 24px rgba(0,0,0,.35);
+  transition:transform .18s,background .18s;
+}
+.figma-embed-wrapper:hover .figma-embed-wrapper__play-btn{
+  transform:scale(1.08);
+  background:#fff;
+}
+.figma-embed-wrapper__play-label{
+  color:#fff;font-size:13px;font-weight:600;
+  text-shadow:0 1px 4px rgba(0,0,0,.5);
+  letter-spacing:.2px;
+}
+/* iframe (état actif, après clic) */
+.figma-embed-wrapper iframe{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  border:none;display:block;
+  border-radius:8px;
+}
+/* Spinner de chargement (visible entre le clic et l'affichage Figma) */
+.figma-embed-wrapper__spinner{
+  position:absolute;inset:0;
+  display:none;align-items:center;justify-content:center;
+  background:#0a0c14;border-radius:8px;
+}
+.figma-embed-wrapper__spinner.is-visible{display:flex;}
+.figma-embed-wrapper__spinner svg{animation:spin 1s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.figma-embed-caption{
+  margin-top:10px;font-size:12px;color:#94a3b8;text-align:center;line-height:1.4;
+}
+@media(max-width:640px){
+  .figma-section{padding:16px 14px 20px;}
+  .figma-section__open{margin-left:0;}
+}
+
+
+
+/* FOOTER */
+.site-footer{border:1px solid var(--stroke);border-radius:var(--r);background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(244,245,247,.92));box-shadow:var(--shadow);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.footer-identity{font-size:13px;line-height:1.5;color:#374151;}
+.footer-identity strong{display:block;font-size:14px;font-weight:600;color:#0a0c14;}
+.footer-back{font-size:13px;color:#6b7280;text-decoration:none;transition:color .15s;}
+.footer-back:hover{color:#0c0c0c;text-decoration:underline;}
+.footer-back:focus-visible{outline:2px solid var(--neonBorder);outline-offset:2px;border-radius:2px;}
+.footer-back:focus:not(:focus-visible){outline:none;}
+@media(max-width:600px){.site-footer{flex-direction:column;align-items:flex-start;gap:8px;}}
+</style>
+</head>
+
+<body>
+
+  <canvas id="bokeh-canvas" aria-hidden="true"></canvas>
+<div class="wrap">
+
+  <!-- Fil d'Ariane -->
+  <nav aria-label="Fil d'Ariane">
+    <ol class="breadcrumb">
+      <li><a href="index.html">Accueil</a></li>
+      <li class="sep" aria-hidden="true">›</li>
+      <li><span aria-current="page">Développement Web</span></li>
+    </ol>
+  </nav>
+
+  <h1 class="pageTitle">Développement Web</h1>
+
+  <section class="section" aria-labelledby="section-sites">
+    <div class="sectionHead"><h2 id="section-sites">Sites Web &amp; projets</h2></div>
+    <div class="grid">
+
+      <div class="tile">
+        <a class="tile-img-link"
+           href="http://fabrice.parriaux.free.fr/wordpress/"
+           target="_blank" rel="noopener"
+           aria-label="Visiter le site Images du Haut-Doubs (nouvel onglet)">
+          <img src="images/vignette_imageshautdoubs.jpg"
+               alt="Capture du site Images du Haut-Doubs, portfolio photographique WordPress"
+               loading="lazy">
+        </a>
+        <div class="cap">
+          <strong>Site web : Images du Haut-Doubs</strong><br>
+          WordPress : Portfolio de présentation de mon travail photographique
+        </div>
+        <div class="btn-fiche-wrap">
+          <span class="proj-badge" aria-label="Projet 10">P10</span>
+          <button class="btn-fiche" data-proj="P10" aria-label="Voir la fiche projet Images du Haut-Doubs">Voir la fiche projet</button>
+        </div>
+      </div>
+
+      <div class="tile">
+        <a class="tile-img-link"
+           href="https://villadeschenes-ponteves.com/"
+           target="_blank" rel="noopener"
+           aria-label="Visiter le site Villa des Chênes (nouvel onglet)">
+          <img src="images/vignette_villa.jpg"
+               alt="Capture du site Villa des Chênes, réservation Hbook et paiement Stripe"
+               loading="lazy">
+        </a>
+        <div class="cap">
+          <strong>Site web : Villa des Chênes</strong><br>
+          Administration et gestion du site<br>
+          Plugins Hbook (réservation) et Stripe (paiement CB)
+        </div>
+        <div class="btn-fiche-wrap">
+          <span class="proj-badge" aria-label="Projet 11">P11</span>
+          <button class="btn-fiche" data-proj="P11" aria-label="Voir la fiche projet Villa des Chênes">Voir la fiche projet</button>
+        </div>
+      </div>
+
+      <div class="tile">
+        <a class="tile-img-link"
+           href="https://digital-campus-borne-accueil.bouldaga25.workers.dev/"
+           target="_blank" rel="noopener"
+           aria-label="Voir le projet plan 3D interactif (nouvel onglet)">
+          <img src="images/plan_bureaux.jpg"
+               alt="Aperçu du plan 3D interactif de bureaux, Three.js et IA"
+               loading="lazy">
+          <div class="status-wip" aria-hidden="true">En développement actif, version bêta en ligne</div>
+        </a>
+        <div class="cap">
+          <strong>Plan 3D interactif</strong><br>
+          Modélisation 3D : SketchUp <br>
+          Interactivité : Three.js + IA - Tests UX - Figma - GitHub - Customer Journey Map - Stakeholders Map
+        </div>
+        <div class="btn-fiche-wrap">
+          <span class="proj-badge" aria-label="Projet 12">P12</span>
+          <button class="btn-fiche" data-proj="P12" aria-label="Voir la fiche projet plan 3D interactif">Voir la fiche projet</button>
+        </div>
+      </div>
+
+      <div class="tile">
+        <a class="tile-img-link"
+           href="http://fabrice.parriaux.free.fr/reunion.php"
+           target="_blank" rel="noopener"
+           aria-label="Accéder à l'application Gestion de réunion SOG (nouvel onglet)">
+          <img src="images/page_sql_sog.jpg"
+               alt="Capture de l'application Gestion de réunion SOG, formulaire PHP avec base MySQL"
+               loading="lazy">
+        </a>
+        <div class="cap">
+          <strong>Page Web de gestion de réunions</strong><br>
+          Formulaire de présence avec base de données<br>
+          PHP + MySQL + HTML/CSS
+        </div>
+        <div class="btn-fiche-wrap">
+          <span class="proj-badge" aria-label="Projet 13">P13</span>
+          <button class="btn-fiche" data-proj="P13" aria-label="Voir la fiche projet Gestion de réunion SOG">Voir la fiche projet</button>
+        </div>
+      </div>
+
+      <div class="tile">
+        <a class="tile-img-link"
+           href="https://www.facebook.com/imageshautdoubs"
+           target="_blank" rel="noopener"
+           aria-label="Visiter la page Facebook Images du Haut-Doubs (nouvel onglet)">
+          <div class="social-preview social-preview--fb" aria-hidden="true">
+            <svg class="social-logo" viewBox="0 0 24 24" fill="white" aria-hidden="true" focusable="false"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.235 2.686.235v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.268h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
+            <div class="social-handle">@imageshautdoubs</div>
+            <div class="social-sub">Page Facebook</div>
+          </div>
+        </a>
+        <div class="cap">
+          <strong>Page Facebook : Images du Haut-Doubs</strong><br>
+          Animation de communauté, publications régulières<br>
+          Photographie de nature et paysages
+        </div>
+        <div class="btn-fiche-wrap">
+          <span class="proj-badge" aria-label="Projet 14">P14</span>
+          <button class="btn-fiche" data-proj="P14" aria-label="Voir la fiche projet page Facebook">Voir la fiche projet</button>
+        </div>
+      </div>
+
+      <div class="tile">
+        <a class="tile-img-link"
+           href="https://www.instagram.com/photographique/"
+           target="_blank" rel="noopener"
+           aria-label="Visiter le compte Instagram PhotoGraphique (nouvel onglet)">
+          <div class="social-preview social-preview--ig" aria-hidden="true">
+            <svg class="social-logo" viewBox="0 0 24 24" fill="white" aria-hidden="true" focusable="false"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            <div class="social-handle">@photographique</div>
+            <div class="social-sub">Compte Instagram</div>
+          </div>
+        </a>
+        <div class="cap">
+          <strong>Instagram : PhotoGraphique</strong><br>
+          Publication et mise en valeur photographique<br>
+          Photographie de nature et paysages
+        </div>
+        <div class="btn-fiche-wrap">
+          <span class="proj-badge" aria-label="Projet 15">P15</span>
+          <button class="btn-fiche" data-proj="P15" aria-label="Voir la fiche projet compte Instagram">Voir la fiche projet</button>
+          <a class="btn-capture openImgModal"
+             href="#"
+             data-img="images/compte_instagram.jpg"
+             data-alt="Capture du compte Instagram PhotoGraphique"
+             aria-label="Voir la capture du compte Instagram PhotoGraphique">Visuel</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION MAQUETTE FIGMA P12 -->
+  <section class="figma-section" id="figma-p12" aria-labelledby="figma-title">
+    <div class="figma-section__head">
+      <div class="figma-section__logo" aria-hidden="true">
+        <!-- Icône Figma simplifiée SVG -->
+        <svg width="20" height="20" viewBox="0 0 38 57" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+          <path d="M19 28.5A9.5 9.5 0 1 1 28.5 19 9.51 9.51 0 0 1 19 28.5Z" fill="#1ABCFE"/>
+          <path d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5A9.5 9.5 0 0 1 0 47.5Z" fill="#0ACF83"/>
+          <path d="M19 0v19h9.5a9.5 9.5 0 1 0 0-19H19Z" fill="#FF7262"/>
+          <path d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5Z" fill="#F24E1E"/>
+          <path d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5Z" fill="#A259FF"/>
+        </svg>
+      </div>
+      <div class="figma-section__titles">
+        <h2 class="figma-section__title" id="figma-title">Maquette Figma : Plan 3D interactif (projet P12)</h2>
+        <p class="figma-section__sub">Prototype navigable, conçu en amont du développement Three.js. Utilisez les flèches ou cliquez sur les zones interactives pour naviguer entre les écrans.</p>
+      </div>
+      <a class="figma-section__open"
+         href="https://www.figma.com/design/6mwSYBUScaTnJpYEpBOOUP/maquettage_ensosp_digital_campus?node-id=0-1&p=f"
+         target="_blank" rel="noopener"
+         aria-label="Ouvrir la maquette Figma en plein écran (nouvel onglet)">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M1 13L13 1M13 1H5M13 1V9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Plein écran
+      </a>
+    </div>
+
+    <div class="figma-section__meta">
+      <span class="figma-section__badge figma-section__badge--proto">Prototype interactif</span>
+      <span class="figma-section__badge figma-section__badge--ux">UX / UI Design</span>
+      <span class="figma-section__badge figma-section__badge--wip">Projet en cours</span>
+    </div>
+
+    <div class="figma-embed-wrapper" id="figmaWrapper" role="button" tabindex="0" aria-label="Lancer le prototype Figma interactif">
+      <!-- Vignette statique (chargée immédiatement) -->
+      <img class="figma-embed-wrapper__thumb"
+           src="images/mequettage_figma.jpg"
+           alt="Aperçu de la maquette Figma : interface du plan 3D interactif ENSOSP Digital Campus"
+           draggable="false">
+      <!-- Overlay sombre -->
+      <div class="figma-embed-wrapper__overlay" aria-hidden="true"></div>
+      <!-- Bouton play -->
+      <div class="figma-embed-wrapper__play" aria-hidden="true">
+        <div class="figma-embed-wrapper__play-btn">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+            <path d="M6 4.5L19.5 12L6 19.5V4.5Z" fill="#1d4ed8"/>
+          </svg>
+        </div>
+        <span class="figma-embed-wrapper__play-label">Lancer le prototype</span>
+      </div>
+      <!-- Spinner (visible entre le clic et le chargement Figma) -->
+      <div class="figma-embed-wrapper__spinner" id="figmaSpinner" aria-hidden="true">
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="18" cy="18" r="15" stroke="rgba(255,255,255,.18)" stroke-width="3"/>
+          <path d="M18 3a15 15 0 0 1 15 15" stroke="#56b4ef" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+    <p class="figma-embed-caption">Prototype réalisé avec Figma avant le développement. Si le prototype ne s'affiche pas, <a href="https://www.figma.com/design/6mwSYBUScaTnJpYEpBOOUP/maquettage_ensosp_digital_campus?node-id=0-1&p=f" target="_blank" rel="noopener">ouvrez-le directement sur Figma</a>.</p>
+  </section>
+
+<footer class="site-footer" role="contentinfo">
+    <div class="footer-identity">
+      <strong>Fabrice Parriaux</strong>
+      Chargé de production numérique et création visuelle&nbsp;&nbsp;|&nbsp;&nbsp;Infographiste&nbsp;&nbsp;|&nbsp;&nbsp;Auteur-photographe
+    </div>
+    <a class="footer-back" href="index.html">Retour à l'accueil</a>
+  </footer>
+
+
+
+
+</div>
+
+<!-- MODALE IMAGE -->
+<div class="modal-img" id="imgModal" role="dialog" aria-modal="true" aria-label="Image agrandie" aria-hidden="true">
+  <div class="modal-img__overlay" data-close-img="1"></div>
+  <div class="modal-img__panel">
+    <button class="modal-img__close" id="imgModalClose" data-close-img="1" aria-label="Fermer l'image agrandie"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="pointer-events:none"><path d="M1 1l12 12M13 1L1 13" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <img class="modal-img__img" id="modalImgEl" alt="">
+  </div>
+</div>
+
+<!-- MODALE FICHE -->
+<div class="modal-fiche" id="ficheModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="ficheTitleEl">
+  <div class="modal-fiche__overlay" id="ficheOverlay"></div>
+  <div class="modal-fiche__panel" id="fichePanel">
+    <button class="modal-fiche__close" id="ficheClose" aria-label="Fermer la fiche projet"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="pointer-events:none"><path d="M1 1l12 12M13 1L1 13" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <div id="ficheContent"></div>
+  </div>
+</div>
+
+
+
+
+
+<script>
+/* ---- Modale image ---- */
+const imgModal      = document.getElementById('imgModal');
+const modalImgEl    = document.getElementById('modalImgEl');
+const imgModalClose = document.getElementById('imgModalClose');
+let imgTrigger = null;
+
+function openImgModal(src, alt, trigger) {
+  modalImgEl.src = src;
+  modalImgEl.alt = alt || '';
+  imgModal.classList.add('is-open');
+  imgModal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  imgTrigger = trigger || null;
+  requestAnimationFrame(() => imgModalClose.focus());
+}
+function closeImgModal() {
+  imgModal.classList.remove('is-open');
+  imgModal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+  modalImgEl.src = '';
+  modalImgEl.alt = '';
+  if (imgTrigger) imgTrigger.focus();
+}
+
+imgModal.addEventListener('keydown', e => {
+  if (!imgModal.classList.contains('is-open')) return;
+  if (e.key === 'Escape') { closeImgModal(); return; }
+  if (e.key === 'Tab') { e.preventDefault(); imgModalClose.focus(); }
+});
+
+document.addEventListener('click', e => {
+  const a = e.target.closest('.openImgModal');
+  if (a) { e.preventDefault(); openImgModal(a.dataset.img, a.dataset.alt, a); return; }
+  /* Logigramme cliquable dans la fiche modale */
+  const lg = e.target.closest('.openLogigramme');
+  if (lg) { openImgModal(lg.src, lg.alt, lg); return; }
+  if (e.target.dataset && e.target.dataset.closeImg === '1') closeImgModal();
+});
+
+/* Navigation clavier sur le logigramme (délégation sur le document) */
+document.addEventListener('keydown', e => {
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('openLogigramme')) {
+    e.preventDefault();
+    openImgModal(e.target.src, e.target.alt, e.target);
+  }
+});
+
+const PROJECTS = {
+  P10: {
+    tag: "Web · Photographie · SEO",
+    title: "P10 - Site portfolio : Images du Haut-Doubs",
+    contexte: "Création, gestion et optimisation d'un site portfolio personnel dédié à la photographie de nature et de paysages du massif du Haut-Doubs. Site hébergé sur Free.fr, propulsé par WordPress, avec configuration complète du référencement naturel.",
+    objectif: "Présenter et valoriser un travail photographique personnel, partager une vision artistique du territoire auprès d'un large public, et assurer la visibilité du site dans les moteurs de recherche.",
+    public: "Amateurs de nature, de photographie et de la région Bourgogne-Franche-Comté.",
+    demarche: [
+      "Sélection et organisation des séries photographiques en galeries thématiques",
+      "Configuration et personnalisation du thème WordPress",
+      "Structuration du portfolio et optimisation de la navigation",
+      "Configuration du référencement naturel : title SEO, slogan du site, meta description (150 caractères) et balises Open Graph via Yoast SEO",
+      "Mise à jour régulière du contenu et suivi de l'activité"
+    ],
+    outils: ["WordPress", "Yoast SEO", "HTML / CSS", "Hébergement Free.fr"],
+    resultat: "Site portfolio actif, régulièrement mis à jour avec de nouvelles galeries. Référencement configuré : title SEO complet (53 caractères), meta description de 150 caractères et balises Open Graph en place pour un partage optimisé sur les réseaux sociaux.<br><span class=\"fiche-eco\"><img src=\"images/feuille.png\" alt=\"Icône éco-conception\" aria-hidden=\"true\">Empreinte carbone mesurée via Website Carbon Calculator : 0,00 g de CO2 par visite, note B, soit une page 36 fois plus sobre que la moyenne mondiale (test du 9 avril 2026).</span>",
+    competences: ["Gestion de contenu CMS (WordPress)", "Optimisation SEO (Yoast SEO, meta description, Open Graph)", "Eco-conception numérique (poids de page optimisé, empreinte carbone mesurée)", "Sensibilité artistique et photographique", "Organisation et curation d'un portfolio visuel"]
+  },
+  P11: {
+    tag: "Web · Tourisme & Hébergement",
+    title: "P11 - Site web : Villa des Chênes",
+    contexte: "Conception, administration et maintenance d'un site web pour une maison de location touristique, comprenant l'intégration d'un système de réservation en ligne. Montant de la prestation : 1 500 € HT (hors frais d'hébergement).",
+    objectif: "Permettre aux visiteurs de découvrir le bien, de vérifier les disponibilités et de réserver directement en ligne avec paiement sécurisé.",
+    public: "Voyageurs et touristes à la recherche d'une location de vacances.",
+    demarche: ["Création et mise à jour du site (hébergement Ionos)", "Intégration du plugin Hbook pour la gestion des réservations", "Connexion au système de paiement Stripe", "Maintenance et mises à jour régulières", "Référencement SEO"],
+    outils: ["WordPress", "Plugin HBook (réservation)", "Stripe (paiement CB)", "WP SEOStats (référencement)"],
+
+resultat: "Site opérationnel avec réservation et paiement en ligne fonctionnels. Suivi du référencement naturel via WP SEOStats et Google Search Console.<br><br>Données collectées sur la période du 8 avril au 10 mai 2026 : 322 impressions dans les résultats de recherche Google, 11 clics, CTR moyen de 3,4%, position moyenne 12. Requêtes principales indexées : <em>villa pontevès</em> (73 impressions), <em>villa des chenes</em> (30 impressions), <em>villa des chênes</em> (27 impressions). Portée internationale confirmée : 8 pays détectés (France, Suisse, États-Unis, Maroc, Canada, Royaume-Uni, Pays-Bas, Belgique). La page de réservation atteint une position moyenne de 2,68, ce qui indique un bon positionnement sur les requêtes à intention transactionnelle.<br><br><a class=\"fiche-ux-pdf openImgModal\" href=\"#\" data-img=\"images/search_console_p11.jpg\" data-alt=\"Capture Google Search Console, Villa des Chênes, avril-mai 2026\" aria-label=\"Voir la capture Google Search Console (fenêtre modale)\" style=\"color:#1d4ed8;\"><img src=\"images/image.png\" alt=\"\" aria-hidden=\"true\" style=\"width:16px;height:16px;object-fit:contain;flex-shrink:0;\">Voir la capture Google Search Console (avril-mai 2026)</a>",
+    
+	competences: ["Administration WordPress", "Intégration de plugins e-commerce et réservation", "Optimisation SEO et suivi des performances", "Gestion de la relation client en ligne"]
+  },
+  
+   P12: {
+    tag: "Web · 3D Interactive · IA",
+    title: "P12 - Plan 3D interactif : Projet en cours",
+    contexte: "Projet en cours de développement : conception d'une interface web présentant un plan 3D interactif de bureaux et de salles de formation, permettant une navigation intuitive destinée à faciliter l'expérience des visiteurs et des agents. La solution est destinée à être déployée sur l'intranet de l'institution et intégrée à une borne interactive à l'entrée du site.",
+    objectif: "Permettre à chaque utilisateur (collaborateur, apprenant, intervenant, visiteur) de localiser facilement bureaux et salles de formation grâce à un plan 3D navigable et mis à jour en temps réel.",
+    public: "Collaborateurs, apprenants, intervenants et visiteurs de l'institution.",
+    demarche: ["Modélisation 3D de l'espace avec SketchUp Pro, sur la base des plans existants", "Export et intégration dans un environnement Three.js : configuration de la scène, de la caméra et des interactions", "Développement de l'interactivité (navigation orbitale, annotations, mise en évidence des salles) avec une approche UI/UX centrée sur l'utilisateur", "Intégration des pratiques d'accessibilité numérique : navigation clavier, attributs ARIA (aria-label, role) et gestion du focus pour une interface utilisable par tous", "Mises à jour facilitées par un chargement dynamique d'un fichier CSV contenant la liste des bureaux et des occupants", "Accompagnement au développement avec Claude.ai (Anthropic) pour la robustesse du code et l'efficacité des itérations"],
+    veille: "Ce projet est né d'une démarche de veille active sur les technologies web 3D accessibles sans plugin. Après avoir identifié Three.js comme la bibliothèque de référence pour la 3D dans le navigateur (source : threejs.org, communauté GitHub, exemples interactifs en ligne), j'ai évalué sa pertinence sur deux critères : la capacité à importer des modèles SketchUp (via export GLTF) et la légèreté de déploiement sur un intranet institutionnel. La veille s'est poursuivie sur les pratiques d'intégration de l'IA générative dans le développement web, notamment l'usage de Claude.ai comme outil d'assistance au code, une pratique émergente que j'ai adoptée et documentée dans ma démarche. Cette capacité à identifier, évaluer et intégrer des technologies nouvelles dans un projet concret est au coeur de ce projet.",
+    outils: ["SketchUp Pro (modélisation 3D)", "Three.js (rendu 3D web)", "JavaScript", "HTML / CSS", "Transfert FTP", "Claude.ai (assistance IA au développement)", "Git / GitHub (versionnement du code source)"],
+    resultat: "Projet en cours de développement. Première version de la scène 3D navigable opérationnelle. La maquette Figma du prototype, réalisée en amont du développement, est consultable ci-dessous.<br><a class=\"fiche-github\" href=\"#figma-p12\" onclick=\"closeFiche()\" aria-label=\"Voir la maquette Figma du plan 3D interactif (ci-dessous)\"><img src=\"images/figma.png\" alt=\"\" aria-hidden=\"true\" style=\"width:16px;height:16px;object-fit:contain;flex-shrink:0;\">Voir la maquette Figma</a><br><a class=\"fiche-github\" href=\"https://github.com/Fabrice13100/ensosp_digital_campus\" target=\"_blank\" rel=\"noopener\" aria-label=\"Code source sur GitHub (repo ensosp_digital_campus, nouvel onglet)\"><img src=\"images/github.png\" alt=\"\" aria-hidden=\"true\" style=\"width:16px;height:16px;object-fit:contain;flex-shrink:0;\">Voir le code source sur GitHub (repo ensosp_digital_campus)</a><br><a class=\"fiche-github\" href=\"docs/stakeholder_map_p12.pdf\" target=\"_blank\" rel=\"noopener\" aria-label=\"Voir la Stakeholders Map du projet P12 (PDF, nouvel onglet)\"><img src=\"images/pdf.png\" alt=\"\" aria-hidden=\"true\" style=\"width:16px;height:16px;object-fit:contain;flex-shrink:0;\">Voir la Stakeholders Map (PDF)</a>",
+    enquete: {
+      intro: "Quatre sessions de tests utilisateurs ont été conduites entre le 30 avril et le 6 mai 2026, sur la version bêta de l'interface borne d'accueil. Protocole : entretien semi-directif pré-test (5 min), observation de 5 tâches (15 min), entretien post-test (5 à 10 min), grille d'observation comportementale. Matériel : ordinateur et souris. Chaque participant a donné son consentement explicite. Aucune donnée nominative n'est conservée.",
+      participants: [],
+      blocages: [],
+      pdf: "docs/bilan_tests_UX.pdf",
+      pdfCJM: "docs/p12_customer_journey_map.pdf"
+    },
+    decisions: [],
+    competences: ["Modélisation 3D et export vers un format web (GLTF)", "Développement web 3D (Three.js)", "Accessibilité numérique (ARIA, navigation clavier, gestion du focus)", "Veille technologique appliquée (bibliothèques JS, IA générative)", "Intégration d'IA dans une démarche de développement", "Conception UI/UX centrée utilisateur", "Conduite d'entretiens semi-directifs et tests utilisateurs", "Recommandation ergonomique issue des tests (AC22.02)", "Prototypage et itération agile"]
+  },   
+  
+    P13: {
+    tag: "Web · Application métier",
+    title: "P13 - Page Web de gestion de réunions",
+    contexte: "Dans le cadre d'un besoin opérationnel, conception et mise en ligne d'une page web permettant de gérer la présence à une réunion.",
+    objectif: "Remplacer un suivi papier par un formulaire numérique connecté à une base de données, facilitant la saisie et la consultation des présences.",
+    public: "Sous-Officiers de Garde pompiers (SOG).",
+    demarche: [
+      "Structuration d'une base de données MySQL simple, avec définition d'une table adaptée (identité / statut)",
+      "Mise en œuvre de requêtes SQL de consultation et de mise à jour",
+      "Développement d'une page PHP assurant la connexion à la base, le traitement des données issues d'un formulaire utilisateur et l'affichage dynamique des résultats",
+      "Intégration des bonnes pratiques d'accessibilité sur le formulaire : labels associés aux champs, navigation clavier, retours visuels explicites",
+      "Mise en ligne sur l'hébergement Free.fr et prise en main par les utilisateurs"
+    ],
+    outils: ["PHP", "MySQL", "HTML / CSS", "transfert FTP", "Git / GitHub (versionnement du code source)"],
+    resultat: "Application opérationnelle accessible en ligne, permettant la saisie et la consultation des présences en réunion. Cette réalisation a permis de comprendre et d'exploiter un modèle client-serveur, de manipuler des données via SQL et de produire une solution fonctionnelle dans un environnement contraint.<br><a class=\"fiche-github\" href=\"https://github.com/Fabrice13100/reunion_sog\" target=\"_blank\" rel=\"noopener\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"#1d4ed8\" xmlns=\"http://www.w3.org/2000/svg\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z\"/></svg>Code source sur GitHub (repo reunion_sog)</a>",
+    logigramme: "images/logigramme_traitement_flux_reunion.jpg",
+    logigrammeAlt: "Logigramme du traitement du flux de données : saisie utilisateur, validation PHP, insertion MySQL, affichage dynamique des présences",
+    logigrammeCaption: "Logigramme du flux de traitement : de la saisie utilisateur au stockage en base de données",
+    rgpd: "La page web a été présentée et approuvée par les utilisateurs concernés, qui ont consenti à la saisie de leurs données nominatives dans ce cadre strictement interne.",
+    competences: ["Développement web back-end (PHP)", "Conception et gestion de base de données (MySQL)", "Modèle client-serveur", "Accessibilité des formulaires web (labels, navigation clavier)", "Analyse d'un besoin métier", "Développement d'une solution sur mesure en environnement contraint", "Sensibilité RGPD"]
+  },
+  P14: {
+    tag: "Réseaux sociaux · Community management",
+    title: "P14 - Page Facebook : Images du Haut-Doubs",
+    contexte: "Création et animation depuis 2014 d'une page Facebook dédiée à la photographie de nature et de paysages du massif du Haut-Doubs, dans le cadre de l'activité de micro-entreprise.",
+    objectif: "Partager régulièrement un travail photographique, fédérer une communauté d'amateurs de nature et valoriser le territoire du Haut-Doubs, en développant une audience organique sans recours à la publicité payante.",
+    public: "Amateurs de photographie, de nature et de la région Bourgogne-Franche-Comté.",
+    demarche: ["Création et configuration de la page, définition d'une identité visuelle cohérente avec le travail photographique", "Définition d'une ligne éditoriale structurée autour du territoire : publications calées sur les saisons (faune, flore, paysages selon les périodes de l'année) et sur des événements ponctuels liés au Haut-Doubs", "Rythme de publication adapté à la production photographique réelle : fréquence variable selon les saisons, sans publication forcée ni contenu de remplissage", "Sélection rigoureuse des images publiées : traitement Lightroom et Photoshop avant toute diffusion, cohérence stylistique maintenue sur l'ensemble des publications", "Animation de la communauté : réponses aux commentaires, interactions avec les abonnés, engagement qualitatif privilégié"],
+    outils: ["Facebook", "Adobe Lightroom", "Adobe Photoshop"],
+    resultat: "Page active depuis 2014 : 9 500 abonnés en avril 2026, croissance 100% organique (aucune publicité payante, aucun abonné acheté). Communauté engagée avec likes et commentaires réguliers. La page constitue également un canal de visibilité pour l'activité de micro-entreprise (cessions de licences, tirages).",
+    competences: ["Community management sur le long terme (depuis 2014)", "Définition et tenue d'une ligne éditoriale saisonnière", "Curation et sélection de contenu photographique", "Développement d'une audience organique (9 500 abonnés sans publicité payante)", "Valorisation d'une activité indépendante via les réseaux sociaux"]
+  },
+  P15: {
+    tag: "Réseaux sociaux · Community management",
+    title: "P15 - Compte Instagram : PhotoGraphique",
+    contexte: "Création et gestion du compte Instagram @photographique, distinct de la page Facebook Images du Haut-Doubs. Ce compte à accès restreint (privé en usage courant, rendu public pour consultation dans le cadre du portfolio) est un espace de partage photographique tous sujets, sans contrainte territoriale ni thématique fixe.",
+    objectif: "Partager une vision photographique généraliste et personnelle, distincte de la ligne éditoriale touristique et naturaliste de Facebook, en explorant d'autres registres visuels.",
+    public: "Photographes et toute personne intéressée par des images soignées et esthétiques.",
+    demarche: ["Création du compte et définition d'une identité visuelle distincte de la page Facebook", "Ligne éditoriale volontairement différente : tous sujets (contrairement à Facebook centré sur le territoire du Haut-Doubs), registre plus personnel et expérimental", "Sélection rigoureuse des photos publiées, priorité donnée à la qualité visuelle et à l'exigence esthétique : cadrage soigné, compositions recherchées", "Rédaction de légendes et interactions avec la communauté", "Compte maintenu actif mais en retrait par rapport à Facebook, qui reste le canal principal"],
+    outils: ["Instagram", "Adobe Lightroom", "Adobe Photoshop"],
+    resultat: "Compte actif : 120 publications, 62 abonnés (compte à accès restreint). Photographie généraliste centrée sur l'exigence visuelle, complémentaire de la démarche Facebook.",
+    competences: ["Gestion de deux lignes éditoriales distinctes sur deux plateformes", "Community management Instagram", "Cohérence visuelle et identité de marque", "Différenciation de contenu selon le canal de diffusion"]
+  },
+
+};
+
+function renderFiche(id) {
+  const p = PROJECTS[id];
+  if (!p) return `<div class="fiche-empty">Fiche en cours de rédaction, revenez bientôt !</div>`;
+  let html = '';
+  if (p.tag) html += `<div class="fiche-tag">${p.tag}</div>`;
+  html += `<div class="fiche-title" id="ficheTitleEl">${p.title}</div><hr class="fiche-divider">`;
+  const block = (label, content) => `<div class="fiche-block"><div class="fiche-label">${label}</div>${content}</div>`;
+  if (p.contexte) html += block('Contexte &amp; besoin', `<div class="fiche-text">${p.contexte}</div>`);
+  if (p.objectif) html += block('Objectif', `<div class="fiche-text">${p.objectif}</div>`);
+  if (p.public) html += block('Public cible', `<div class="fiche-text">${p.public}</div>`);
+  if (p.demarche && p.demarche.length) {
+    const steps = p.demarche.map((s,i)=>`<li data-n="${i+1}">${s}</li>`).join('');
+    html += block('Démarche de conception', `<ol class="fiche-steps">${steps}</ol>`);
+  }
+  if (p.veille) html += `<div class="fiche-block"><div class="fiche-veille-label">Veille technologique</div><div class="fiche-veille-text">${p.veille}</div></div>`;
+  if (p.outils && p.outils.length) {
+    const pills = p.outils.map(o=>`<span class="fiche-pill">${o}</span>`).join('');
+    html += block('Outils utilisés', `<div class="fiche-pills">${pills}</div>`);
+  }
+  if (p.enquete) {
+    const eq = p.enquete;
+    let eqHtml = '<div class="fiche-text">' + eq.intro + '</div>';
+    eqHtml += '<div class="fiche-ux-participants">';
+    eq.participants.forEach(function(pt) {
+      eqHtml += '<div class="fiche-ux-participant"><strong>' + pt.id + ' &bull; ' + pt.profil + '</strong>' + pt.connaissance + ' &mdash; ' + pt.usage + '<br>Satisfaction : <strong>' + pt.note + '</strong></div>';
+    });
+    eqHtml += '</div>';
+    if (eq.blocages && eq.blocages.length) {
+      eqHtml += '<div style="margin-top:10px;font-size:13px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#0e7490;">Points de blocage identifiés</div><ol style="margin:6px 0 0 18px;padding:0;">';
+      eq.blocages.forEach(function(b) { eqHtml += '<li style="font-size:14px;line-height:1.5;color:#334155;margin-bottom:4px;">' + b + '</li>'; });
+      eqHtml += '</ol>';
+    }
+	
+	
+    let pdfLinks = '';
+    if (eq.pdf) {
+      pdfLinks = '<a class="fiche-github" href="' + eq.pdf + '" target="_blank" rel="noopener" aria-label="Voir le bilan complet des tests utilisateurs (PDF, nouvel onglet)"><img src="images/pdf.png" alt="" aria-hidden="true" style="width:16px;height:16px;object-fit:contain;flex-shrink:0;"> Voir le bilan complet des tests utilisateurs (PDF)</a>';
+    }
+    if (eq.pdfCJM) {
+      pdfLinks += '<a class="fiche-github" href="' + eq.pdfCJM + '" target="_blank" rel="noopener" aria-label="Voir la Customer Journey Map (PDF, nouvel onglet)" style="display:block;margin-top:8px;"><img src="images/pdf.png" alt="" aria-hidden="true" style="width:16px;height:16px;object-fit:contain;flex-shrink:0;"> Voir le Customer Journey Map (PDF)</a>';
+    }
+    html += '<div class="fiche-block"><div class="fiche-label">Enquête utilisateurs</div>' + eqHtml + (pdfLinks ? '<div style="margin-top:10px;">' + pdfLinks + '</div>' : '') + '</div>';
+
+ }
+  if (p.decisions && p.decisions.length) {
+    let decHtml = '<div class="fiche-decision-text">Quatre décisions de conception ont été formalisées à l\'issue des tests, en lien direct avec les points de blocage observés.</div>';
+    decHtml += '<table class="fiche-decision-table" role="table"><thead><tr><th scope="col">N°</th><th scope="col">Problème identifié</th><th scope="col">Modification apportée ou envisagée</th></tr></thead><tbody>';
+    p.decisions.forEach(function(d) {
+      decHtml += '<tr><td>' + d.n + '</td><td>' + d.probleme + '</td><td>' + d.action + '</td></tr>';
+    });
+    decHtml += '</tbody></table>';
+    html += '<div class="fiche-block"><div class="fiche-decision-label">&#9998; Décisions de conception issues des tests</div>' + decHtml + '</div>';
+  }
+  if (p.resultat) html += block('Résultat &amp; diffusion', `<div class="fiche-text">${p.resultat}</div>`);
+  if (p.logigramme) html += `<div class="fiche-block"><div class="fiche-label">Modélisation des traitements</div><div class="fiche-logigramme-wrap"><img class="fiche-logigramme openLogigramme" src="${p.logigramme}" alt="${p.logigrammeAlt || 'Logigramme du traitement'}" loading="lazy" role="button" tabindex="0" aria-label="Agrandir le logigramme"><p class="fiche-logigramme-caption">${p.logigrammeCaption || ''}</p></div></div>`;
+  if (p.rgpd) html += block('Données personnelles &amp; RGPD', `<div class="fiche-text">${p.rgpd}</div>`);
+  if (p.competences && p.competences.length) {
+    const comps = p.competences.map(c=>`<span class="fiche-competence">${c}</span>`).join('');
+    html += block('Compétences mobilisées', `<div class="fiche-competences">${comps}</div>`);
+  }
+  return html;
+}
+
+const ficheModal   = document.getElementById('ficheModal');
+const ficheContent = document.getElementById('ficheContent');
+const fichePanel   = document.getElementById('fichePanel');
+let ficheTrigger = null;
+
+function openFiche(id, trigger) {
+  ficheContent.innerHTML = renderFiche(id);
+  ficheModal.classList.add('is-open');
+  ficheModal.setAttribute('aria-hidden', 'false');
+  fichePanel.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+  ficheTrigger = trigger || null;
+  requestAnimationFrame(() => document.getElementById('ficheClose').focus());
+}
+function closeFiche() {
+  ficheModal.classList.remove('is-open');
+  ficheModal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+  if (ficheTrigger) ficheTrigger.focus();
+}
+
+document.querySelectorAll('.btn-fiche').forEach(btn => {
+  btn.addEventListener('click', () => openFiche(btn.dataset.proj, btn));
+});
+
+document.getElementById('ficheClose').addEventListener('click', closeFiche);
+document.getElementById('ficheOverlay').addEventListener('click', closeFiche);
+
+// Trap focus : modale fiche
+ficheModal.addEventListener('keydown', e => {
+  if (!ficheModal.classList.contains('is-open')) return;
+  if (e.key === 'Escape') { closeFiche(); return; }
+  if (e.key === 'Tab') {
+    const focusable = ficheModal.querySelectorAll('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])');
+    const first = focusable[0];
+    const last  = focusable[focusable.length - 1];
+    if (e.shiftKey) {
+      if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+    } else {
+      if (document.activeElement === last)  { e.preventDefault(); first.focus(); }
+    }
+  }
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && ficheModal.classList.contains('is-open')) closeFiche();
+});
+</script>
+
+<script>
+/* =====================================================
+   LAZY LOAD FIGMA EMBED
+   L'iframe n'est injectée qu'au clic sur la vignette.
+   Gestion clavier : Entrée et Espace déclenchent aussi.
+===================================================== */
+(function () {
+  var FIGMA_SRC = 'https://embed.figma.com/proto/6mwSYBUScaTnJpYEpBOOUP/maquettage_ensosp_digital_campus?node-id=20-3&embed-host=share';
+  var FIGMA_TITLE = 'Prototype Figma : maquette de l\'interface du plan 3D interactif ENSOSP Digital Campus';
+
+  var wrapper = document.getElementById('figmaWrapper');
+  var spinner = document.getElementById('figmaSpinner');
+  if (!wrapper) return;
+
+  function launchFigma() {
+    /* Déjà lancé : ne rien faire */
+    if (wrapper.dataset.launched === '1') return;
+    wrapper.dataset.launched = '1';
+
+    /* Masquer vignette, overlay, bouton play */
+    var thumb   = wrapper.querySelector('.figma-embed-wrapper__thumb');
+    var overlay = wrapper.querySelector('.figma-embed-wrapper__overlay');
+    var play    = wrapper.querySelector('.figma-embed-wrapper__play');
+    if (thumb)   { thumb.style.display   = 'none'; }
+    if (overlay) { overlay.style.display = 'none'; }
+    if (play)    { play.style.display    = 'none'; }
+
+    /* Afficher le spinner */
+    spinner.classList.add('is-visible');
+
+    /* Créer et injecter l'iframe */
+    var iframe = document.createElement('iframe');
+    iframe.src         = FIGMA_SRC;
+    iframe.title       = FIGMA_TITLE;
+    iframe.allowFullscreen = true;
+    iframe.setAttribute('allow', 'fullscreen');
+
+    iframe.addEventListener('load', function () {
+      spinner.classList.remove('is-visible');
+    });
+
+    wrapper.appendChild(iframe);
+
+    /* Retirer les attributs d'accessibilité du wrapper (c'est maintenant l'iframe) */
+    wrapper.removeAttribute('role');
+    wrapper.removeAttribute('tabindex');
+    wrapper.removeAttribute('aria-label');
+    wrapper.style.cursor = 'default';
+  }
+
+  wrapper.addEventListener('click', launchFigma);
+  wrapper.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      launchFigma();
+    }
+  });
+})();
+</script>
+
+
+  <script>
+    (function() {
+      /* =====================================================
+         REGLAGE DU MOUVEMENT : modifier la valeur de SPEED
+         0.2 = tres lent   |   0.5 = lent   |   0.9 = moyen
+         1.5 = rapide      |   2.5 = tres rapide
+      ===================================================== */
+      var SPEED = 0.9;
+
+      var canvas = document.getElementById('bokeh-canvas');
+      var ctx = canvas.getContext('2d');
+      var W = 0, H = 0;
+
+      function resize() {
+        W = window.innerWidth;
+        H = window.innerHeight;
+        canvas.width = Math.round(W * window.devicePixelRatio);
+        canvas.height = Math.round(H * window.devicePixelRatio);
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      }
+
+      resize();
+      window.addEventListener('resize', resize);
+
+      var COLORS = [
+        'rgba(255,100,120,',
+        'rgba(80,160,255,',
+        'rgba(60,220,180,',
+        'rgba(255,200,60,',
+        'rgba(180,80,255,',
+        'rgba(255,140,60,',
+        'rgba(60,200,255,',
+        'rgba(255,80,180,'
+      ];
+
+      var COUNT = 18;
+      var bubbles = [];
+
+      function initBubbles() {
+        bubbles = [];
+        for (var i = 0; i < COUNT; i++) {
+          bubbles.push({
+            x: Math.random() * W,
+            y: Math.random() * H,
+            r: Math.random() * 120 + 40,
+            vx: (Math.random() - 0.5) * 2 * SPEED,
+            vy: (Math.random() - 0.5) * 2 * SPEED,
+            color: COLORS[Math.floor(Math.random() * COLORS.length)],
+            alpha: Math.random() * 0.15 + 0.06,
+            phase: Math.random() * Math.PI * 2,
+            pulseSpeed: Math.random() * 0.004 + 0.002
+          });
+        }
+      }
+
+      initBubbles();
+
+      var t = 0;
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        for (var i = 0; i < bubbles.length; i++) {
+          var b = bubbles[i];
+          var pulse = 1 + 0.06 * Math.sin(t * b.pulseSpeed * 60 + b.phase);
+          var r = b.r * pulse;
+          var grad = ctx.createRadialGradient(b.x, b.y, r * 0.1, b.x, b.y, r);
+          grad.addColorStop(0, b.color + (b.alpha * 1.4) + ')');
+          grad.addColorStop(0.5, b.color + b.alpha + ')');
+          grad.addColorStop(1, b.color + '0)');
+          ctx.filter = 'blur(22px)';
+          ctx.beginPath();
+          ctx.arc(b.x, b.y, r, 0, Math.PI * 2);
+          ctx.fillStyle = grad;
+          ctx.fill();
+          ctx.filter = 'none';
+          b.x += b.vx;
+          b.y += b.vy;
+          if (b.x < -b.r)    b.x = W + b.r;
+          if (b.x > W + b.r) b.x = -b.r;
+          if (b.y < -b.r)    b.y = H + b.r;
+          if (b.y > H + b.r) b.y = -b.r;
+        }
+        t++;
+        requestAnimationFrame(draw);
+      }
+
+      draw();
+    })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Mentions légales &amp; RGPD : Fabrice Parriaux</title>
+  <meta name="description" content="Mentions légales et politique de confidentialité du portfolio de Fabrice Parriaux, technicien multimédia et auteur-photographe.">
+  <meta name="author" content="Fabrice Parriaux">
+
+  <style>
+    :root{
+      --stroke:#d8dbe2;
+      --shadow:0 18px 50px rgba(0,0,0,.08);
+      --r:10px;
+      --neonBorder:rgba(0,168,255,.45);
+    }
+
+    *{ box-sizing:border-box; margin:0; padding:0; }
+
+    body{
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:#f8f8ff;
+      color:#0c0c0c;
+    }
+
+    #bokeh-canvas{
+      position:fixed;
+      inset:0;
+      width:100%;
+      height:100%;
+      z-index:0;
+      pointer-events:none;
+    }
+
+    .wrap{
+      position:relative;
+      z-index:1;
+      max-width:860px;
+      margin:0 auto;
+      padding:40px 26px 60px;
+      display:flex;
+      flex-direction:column;
+      gap:32px;
+    }
+
+    /* BREADCRUMB */
+    .breadcrumb{
+      font-size:13px;
+      color:#6b7280;
+      display:flex;
+      align-items:center;
+      gap:6px;
+      list-style:none;
+    }
+
+    .breadcrumb a{
+      color:#6b7280;
+      text-decoration:none;
+    }
+
+    .breadcrumb a:hover,
+    .breadcrumb a:focus-visible{
+      color:#0c0c0c;
+      text-decoration:underline;
+      outline:2px solid var(--neonBorder);
+      outline-offset:2px;
+      border-radius:2px;
+    }
+
+    .breadcrumb .sep{ color:#d8dbe2; }
+    .breadcrumb [aria-current="page"]{ color:#0c0c0c; font-weight:500; }
+
+    /* TITRE PAGE */
+    .page-title{
+      font-size:22px;
+      font-weight:600;
+      text-align:center;
+      color:#0a0c14;
+    }
+
+    /* BLOCS */
+    .legal-block{
+      border:1px solid var(--stroke);
+      border-radius:var(--r);
+      background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(244,245,247,.96));
+      box-shadow:var(--shadow);
+      padding:24px 28px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .legal-block h2{
+      font-size:15px;
+      font-weight:700;
+      color:#1d4ed8;
+      letter-spacing:.3px;
+      text-transform:uppercase;
+      padding-bottom:10px;
+      border-bottom:1px solid var(--stroke);
+    }
+
+    .legal-block p{
+      font-size:14px;
+      line-height:1.7;
+      color:#374151;
+    }
+
+    .legal-block ul{
+      padding-left:18px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    .legal-block ul li{
+      font-size:14px;
+      line-height:1.6;
+      color:#374151;
+    }
+
+    .legal-block a{
+      color:#1d4ed8;
+      text-decoration:none;
+    }
+
+    .legal-block a:hover{
+      text-decoration:underline;
+    }
+
+    .legal-block a:focus-visible{
+      outline:2px solid var(--neonBorder);
+      outline-offset:2px;
+      border-radius:2px;
+    }
+
+    strong{
+      font-weight:600;
+      color:#0a0c14;
+    }
+
+    /* FOOTER */
+    .site-footer{
+      border:1px solid var(--stroke);
+      border-radius:var(--r);
+      background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(244,245,247,.92));
+      box-shadow:var(--shadow);
+      padding:14px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .footer-identity{
+      font-size:13px;
+      line-height:1.5;
+      color:#374151;
+    }
+
+    .footer-identity strong{
+      display:block;
+      font-size:14px;
+      font-weight:600;
+      color:#0a0c14;
+    }
+
+    .footer-back{
+      font-size:13px;
+      color:#6b7280;
+      text-decoration:none;
+      transition:color .15s;
+    }
+
+    .footer-back:hover{ color:#0c0c0c; text-decoration:underline; }
+
+    .footer-back:focus-visible{
+      outline:2px solid var(--neonBorder);
+      outline-offset:2px;
+      border-radius:2px;
+    }
+
+    @media (max-width:600px){
+      .wrap{ padding:18px 16px 40px; gap:20px; }
+      .legal-block{ padding:18px 16px; }
+      .site-footer{ flex-direction:column; align-items:flex-start; gap:8px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <canvas id="bokeh-canvas" aria-hidden="true"></canvas>
+
+  <div class="wrap">
+
+    <!-- Fil d'Ariane -->
+    <nav aria-label="Fil d'Ariane">
+      <ol class="breadcrumb">
+        <li><a href="index.html">Accueil</a></li>
+        <li class="sep" aria-hidden="true">›</li>
+        <li><span aria-current="page">Mentions légales &amp; RGPD</span></li>
+      </ol>
+    </nav>
+
+    <h1 class="page-title">Mentions légales &amp; RGPD</h1>
+
+    <!-- IDENTIFICATION -->
+    <section class="legal-block" aria-labelledby="section-identification">
+      <h2 id="section-identification">Identification du site</h2>
+      <p>Ce site est un portfolio personnel présentant les compétences, le parcours et les productions de son propriétaire, dans un but de valorisation professionnelle.</p>
+      <p><strong>Propriétaire, webmaster et responsable de publication :</strong> Fabrice Parriaux</p>
+      <p><strong>Activité :</strong> Chargé de production numérique et création visuelle, Infographiste, Auteur-photographe</p>
+      <p><strong>SIRET :</strong> 808 411 672 00062</p>
+      <p><strong>Hébergement :</strong> Cloudflare Workers (Cloudflare, Inc., 101 Townsend St, San Francisco, CA 94107, États-Unis). Traitement des données conforme au RGPD via les accords de transfert encadrés par les clauses contractuelles types de la Commission européenne.</p>
+    </section>
+
+    <!-- PROPRIÉTÉ INTELLECTUELLE -->
+    <section class="legal-block" aria-labelledby="section-pi">
+      <h2 id="section-pi">Propriété intellectuelle</h2>
+      <p>L'ensemble du contenu de ce site (textes, images, photographies, vidéos, graphismes, logos, maquettes) est protégé par le droit d'auteur et le Code de la propriété intellectuelle.</p>
+      <p>Toute reproduction, représentation, modification, publication ou transmission, totale ou partielle, par quelque procédé que ce soit, est strictement interdite sans l'autorisation écrite préalable de Fabrice Parriaux.</p>
+      <p>Les photographies présentées sur ce site sont la propriété exclusive de Fabrice Parriaux. Leur utilisation à des fins commerciales ou éditoriales est soumise à la signature d'un contrat de cession de droits.</p>
+    </section>
+
+    <!-- DONNÉES PERSONNELLES ET RGPD -->
+    <section class="legal-block" aria-labelledby="section-rgpd">
+      <h2 id="section-rgpd">Données personnelles et RGPD</h2>
+      <p>Conformément au Règlement général sur la protection des données (RGPD, UE 2016/679) et à la loi Informatique et Libertés du 6 janvier 1978 modifiée, vous disposez de droits sur vos données personnelles.</p>
+      <p><strong>Données collectées :</strong> Ce site ne collecte aucune donnée personnelle à des fins de suivi, de publicité ou d'analyse de trafic. Aucun cookie de traçage n'est déposé.</p>
+      <p><strong>Formulaire de contact :</strong> Lorsque vous utilisez le formulaire de contact, les informations saisies (nom, adresse email, message) sont transmises via le service Formspree (Formspree LLC, États-Unis) uniquement dans le but de répondre à votre demande. Ces données ne sont pas conservées au-delà du traitement de votre message et ne sont jamais transmises à des tiers à des fins commerciales.</p>
+      <p><strong>Vos droits :</strong> Vous disposez d'un droit d'accès, de rectification, d'opposition et de suppression des données vous concernant. Pour exercer ces droits, adressez votre demande à : <a href="mailto:fabrice.parriaux@ensosp.fr">fabrice.parriaux@ensosp.fr</a></p>
+      <p>Pour toute réclamation, vous pouvez également contacter la <a href="https://www.cnil.fr" target="_blank" rel="noopener">Commission Nationale de l'Informatique et des Libertés (CNIL)</a>.</p>
+    </section>
+
+    <!-- LIENS HYPERTEXTES -->
+    <section class="legal-block" aria-labelledby="section-liens">
+      <h2 id="section-liens">Liens hypertextes</h2>
+      <p>Ce site peut contenir des liens vers des sites tiers (YouTube, Facebook, Instagram, GitHub, Figma). Ces sites sont régis par leurs propres conditions d'utilisation et politiques de confidentialité. Fabrice Parriaux ne peut être tenu responsable de leur contenu ni de leur politique de traitement des données.</p>
+    </section>
+
+    <!-- RESPONSABILITÉS -->
+    <section class="legal-block" aria-labelledby="section-responsabilites">
+      <h2 id="section-responsabilites">Responsabilités</h2>
+      <p>Les informations présentes sur ce site sont fournies à titre indicatif. Fabrice Parriaux s'efforce de maintenir les contenus à jour mais ne peut garantir leur exhaustivité ni leur exactitude à tout moment.</p>
+      <p>La connexion à ce site et son utilisation s'effectuent sous l'entière responsabilité de l'utilisateur.</p>
+      <p><strong>Date de dernière mise à jour :</strong> mai 2026</p>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer" role="contentinfo">
+      <div class="footer-identity">
+        <strong>Fabrice Parriaux</strong>
+        Chargé de production numérique et création visuelle&nbsp;&nbsp;|&nbsp;&nbsp;Infographiste&nbsp;&nbsp;|&nbsp;&nbsp;Auteur-photographe
+      </div>
+      <a class="footer-back" href="index.html">Retour à l'accueil</a>
+    </footer>
+
+  </div>
+
+  <script>
+    (function() {
+      var SPEED = 0.9;
+      var canvas = document.getElementById('bokeh-canvas');
+      var ctx = canvas.getContext('2d');
+      var W = 0, H = 0;
+
+      function resize() {
+        W = window.innerWidth;
+        H = window.innerHeight;
+        canvas.width = Math.round(W * window.devicePixelRatio);
+        canvas.height = Math.round(H * window.devicePixelRatio);
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      }
+
+      resize();
+      window.addEventListener('resize', resize);
+
+      var COLORS = [
+        'rgba(255,100,120,',
+        'rgba(80,160,255,',
+        'rgba(60,220,180,',
+        'rgba(255,200,60,',
+        'rgba(180,80,255,',
+        'rgba(255,140,60,',
+        'rgba(60,200,255,',
+        'rgba(255,80,180,'
+      ];
+
+      var COUNT = 18;
+      var bubbles = [];
+
+      function initBubbles() {
+        bubbles = [];
+        for (var i = 0; i < COUNT; i++) {
+          bubbles.push({
+            x: Math.random() * W,
+            y: Math.random() * H,
+            r: Math.random() * 120 + 40,
+            vx: (Math.random() - 0.5) * 2 * SPEED,
+            vy: (Math.random() - 0.5) * 2 * SPEED,
+            color: COLORS[Math.floor(Math.random() * COLORS.length)],
+            alpha: Math.random() * 0.15 + 0.06,
+            phase: Math.random() * Math.PI * 2,
+            pulseSpeed: Math.random() * 0.004 + 0.002
+          });
+        }
+      }
+
+      initBubbles();
+
+      var t = 0;
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        for (var i = 0; i < bubbles.length; i++) {
+          var b = bubbles[i];
+          var pulse = 1 + 0.06 * Math.sin(t * b.pulseSpeed * 60 + b.phase);
+          var r = b.r * pulse;
+          var grad = ctx.createRadialGradient(b.x, b.y, r * 0.1, b.x, b.y, r);
+          grad.addColorStop(0, b.color + (b.alpha * 1.4) + ')');
+          grad.addColorStop(0.5, b.color + b.alpha + ')');
+          grad.addColorStop(1, b.color + '0)');
+          ctx.filter = 'blur(22px)';
+          ctx.beginPath();
+          ctx.arc(b.x, b.y, r, 0, Math.PI * 2);
+          ctx.fillStyle = grad;
+          ctx.fill();
+          ctx.filter = 'none';
+          b.x += b.vx;
+          b.y += b.vy;
+          if (b.x < -b.r)    b.x = W + b.r;
+          if (b.x > W + b.r) b.x = -b.r;
+          if (b.y < -b.r)    b.y = H + b.r;
+          if (b.y > H + b.r) b.y = -b.r;
+        }
+        t++;
+        requestAnimationFrame(draw);
+      }
+
+      draw();
+    })();
+  </script>
+
+</body>
+</html>

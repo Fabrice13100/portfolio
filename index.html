@@ -1,0 +1,738 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Fabrice Parriaux : Portfolio Multimédia</title>
+  <meta name="description" content="Portfolio de Fabrice Parriaux, technicien multimédia, graphiste, vidéaste et développeur web. Créations numériques, développement web et photographie professionnelle.">
+  <meta name="author" content="Fabrice Parriaux">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Fabrice Parriaux : Portfolio Multimédia">
+  <meta property="og:description" content="Portfolio de Fabrice Parriaux, technicien multimédia, graphiste, vidéaste et développeur web. Créations numériques, développement web et photographie professionnelle.">
+  <meta property="og:locale" content="fr_FR">
+
+  <style>
+    :root{
+      --stroke:#d8dbe2;
+      --shadow:0 18px 50px rgba(0,0,0,.08);
+      --r:10px;
+      --neonBorder:rgba(0,168,255,.45);
+      --neonGlow1:rgba(0,168,255,.25);
+      --neonGlow2:rgba(0,168,255,.12);
+    }
+
+    *{ box-sizing:border-box; margin:0; padding:0; }
+
+    body{
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:#f8f8ff;
+      color:#0c0c0c;
+    }
+
+    #bokeh-canvas{
+      position:fixed;
+      inset:0;
+      width:100%;
+      height:100%;
+      z-index:0;
+      pointer-events:none;
+    }
+
+    .wrap{
+      position:relative;
+      z-index:1;
+      min-height:100vh;
+      max-width:1200px;
+      margin:0 auto;
+      padding:100px 26px 40px;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-start;
+      align-items:center;
+      gap:30px;
+    }
+
+    /* HEADER */
+    header{
+      display:flex;
+      justify-content:flex-start;
+      align-items:center;
+    }
+
+    .header-center{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .avatar{
+      width:44px;
+      height:44px;
+      border-radius:10px;
+      object-fit:cover;
+      border:1px solid var(--stroke);
+      box-shadow:0 10px 18px rgba(0,0,0,.06);
+      flex:0 0 auto;
+    }
+
+    h1{
+      margin:0;
+      font-size:20px;
+      font-weight:500;
+      line-height:1.2;
+    }
+
+    /* NAVIGATION CARTES */
+    main{
+      display:flex;
+      justify-content:flex-start;
+      align-items:center;
+      align-items:flex-start;
+    }
+
+    .cards{
+      display:flex;
+      flex-direction:column;
+      gap:30px;
+      width:100%;
+      max-width:480px;
+    }
+
+    .card{
+      width:100%;
+      background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(244,245,247,.92));
+      border:1px solid var(--stroke);
+      border-radius:var(--r);
+      box-shadow:var(--shadow);
+      display:flex;
+      flex-direction:row;
+      align-items:center;
+      gap:20px;
+      padding:18px 24px;
+      text-decoration:none;
+      color:inherit;
+      transition:
+        transform .18s ease,
+        box-shadow .18s ease,
+        border-color .18s ease;
+      backdrop-filter:blur(2px);
+      -webkit-backdrop-filter:blur(2px);
+    }
+
+    .card:hover,
+    .card:focus-visible{
+      transform:scale(1.015);
+      border-color:rgba(0,168,255,.28);
+      box-shadow:
+        0 14px 38px rgba(0,0,0,.13),
+        0 0 0 3px rgba(0,168,255,.08),
+        0 0 24px rgba(0,168,255,.10);
+      outline:none;
+    }
+
+    .card:focus:not(:focus-visible){ outline:none; }
+
+    .card h2{
+      margin:0;
+      font-size:17px;
+      font-weight:500;
+      text-align:left;
+    }
+
+    .icon{
+      width:100px;
+      height:100px;
+      opacity:.9;
+    }
+
+    /* FOOTER */
+    .site-footer{
+      border:1px solid var(--stroke);
+      border-radius:var(--r);
+      background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(244,245,247,.92));
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(2px);
+      -webkit-backdrop-filter:blur(2px);
+      padding:16px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      flex-direction:column;
+      align-items:center;
+      width:100%;
+      max-width:450px;
+      margin:0 auto;
+    }
+
+    .footer-identity{
+      font-size:13px;
+      line-height:1.5;
+      color:#374151;
+      text-align:center;
+    }
+
+    .footer-identity strong{
+      display:block;
+      font-size:14px;
+      font-weight:600;
+      color:#0a0c14;
+    }
+
+    .footer-links{
+      display:flex;
+      align-items:center;
+      gap:20px;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+
+    .footer-link{
+      font-size:13px;
+      color:#6b7280;
+      text-decoration:none;
+      background:none;
+      border:none;
+      cursor:pointer;
+      padding:0;
+      font-family:inherit;
+      transition:color .15s;
+    }
+
+    .footer-link:hover{
+      color:#0c0c0c;
+      text-decoration:underline;
+    }
+
+    .footer-link:focus-visible{
+      outline:2px solid var(--neonBorder);
+      outline-offset:2px;
+      border-radius:2px;
+    }
+
+    .footer-link:focus:not(:focus-visible){ outline:none; }
+
+    /* CTA Contactez-moi */
+    .footer-link--cta{
+      background:#ffffff;
+      color:#000000;
+      border:1px solid #666666;
+      border-radius:10px;
+      padding:7px 15px;
+      font-size:13px;
+      font-weight:500;
+      letter-spacing:.3px;
+      transition:background .18s,color .18s,border-color .18s,box-shadow .18s,transform .12s;
+    }
+
+    .footer-link--cta:hover{
+      background:#fff;
+      color:#1d4ed8;
+      border-color:#1d4ed8;
+      box-shadow:0 4px 14px rgba(29,78,216,.18);
+      transform:translateY(-1px);
+      text-decoration:none;
+    }
+
+    .footer-link--cta:focus-visible{
+      outline:2px solid var(--neonBorder);
+      outline-offset:3px;
+      border-radius:20px;
+    }
+
+    .footer-link--cta:focus:not(:focus-visible){ outline:none; }
+
+    .footer-link--cta img{
+      opacity:1;
+    }
+
+    .footer-sep{
+      color:#d8dbe2;
+      font-size:13px;
+      user-select:none;
+    }
+
+    /* MODALE CONTACT */
+    .modal-contact{
+      position:fixed;
+      inset:0;
+      z-index:9999;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+    }
+
+    .modal-contact.is-open{ display:flex; }
+
+    .modal-contact__overlay{
+      position:absolute;
+      inset:0;
+      background:rgba(10,12,20,.6);
+      backdrop-filter:blur(4px);
+    }
+
+    .modal-contact__panel{
+      position:relative;
+      width:100%;
+      max-width:520px;
+      max-height:90vh;
+      overflow-y:auto;
+      background:#fff;
+      border-radius:18px;
+      box-shadow:0 30px 80px rgba(0,0,0,.22),0 0 0 1px rgba(0,0,0,.06);
+      padding:36px 36px 30px;
+      animation:slideUp .28s cubic-bezier(.22,.68,0,1.2);
+    }
+
+    @keyframes slideUp{
+      from{ opacity:0; transform:translateY(24px) scale(.97); }
+      to{ opacity:1; transform:translateY(0) scale(1); }
+    }
+
+    .modal-contact__close{
+      position:absolute;
+      top:14px;
+      right:16px;
+      width:32px;
+      height:32px;
+      border-radius:6px;
+      background:#dc2626;
+      border:none;
+      cursor:pointer;
+      display:grid;
+      place-items:center;
+      transition:background .15s;
+      user-select:none;
+      -webkit-user-select:none;
+    }
+
+    .modal-contact__close:hover{ background:#b91c1c; }
+
+    .modal-contact__close:focus-visible{
+      outline:2px solid #fca5a5;
+      outline-offset:2px;
+      border-radius:6px;
+    }
+
+    .modal-contact__close:focus:not(:focus-visible){ outline:none; }
+
+    .modal-contact__head{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      margin-bottom:24px;
+    }
+
+    .modal-contact__img{
+      width:48px;
+      height:48px;
+      flex-shrink:0;
+      opacity:.85;
+    }
+
+    .modal-contact__title{
+      font-size:1.3rem;
+      font-weight:700;
+      color:#0a0c14;
+      margin:0;
+    }
+
+    /* FORMULAIRE */
+    .contact-form{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .form-group{
+      display:flex;
+      flex-direction:column;
+      gap:5px;
+    }
+
+    .form-label{
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:.5px;
+      text-transform:uppercase;
+      color:#374151;
+    }
+
+    .form-input,
+    .form-textarea{
+      width:100%;
+      padding:10px 14px;
+      border:1.5px solid #d1d5db;
+      border-radius:8px;
+      font-size:14px;
+      font-family:inherit;
+      color:#0c0c0c;
+      background:#fff;
+      transition:border-color .15s, box-shadow .15s;
+      outline:none;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus{
+      border-color:rgba(0,168,255,.6);
+      box-shadow:0 0 0 3px rgba(0,168,255,.12);
+    }
+
+    .form-textarea{
+      resize:vertical;
+      min-height:110px;
+    }
+
+    .form-submit{
+      padding:11px 0;
+      background:#56b4ef;
+      border:1.5px solid #56b4ef;
+      border-radius:8px;
+      font-size:14px;
+      font-weight:600;
+      color:#fff;
+      cursor:pointer;
+      font-family:inherit;
+      letter-spacing:.3px;
+      transition:background .18s, color .18s, border-color .18s, box-shadow .18s, transform .12s;
+    }
+
+    .form-submit:hover{
+      background:#fff;
+      color:#1d4ed8;
+      border-color:#1d4ed8;
+      box-shadow:0 4px 14px rgba(29,78,216,.18);
+      transform:translateY(-1px);
+    }
+
+    .form-submit:focus-visible{
+      outline:2px solid var(--neonBorder);
+      outline-offset:2px;
+    }
+
+    .form-submit:focus:not(:focus-visible){ outline:none; }
+
+    .form-submit:disabled{
+      opacity:.6;
+      cursor:not-allowed;
+      transform:none;
+    }
+
+    /* Messages de retour formulaire */
+    .form-feedback{
+      display:none;
+      padding:12px 16px;
+      border-radius:8px;
+      font-size:14px;
+      line-height:1.5;
+      margin-bottom:6px;
+    }
+
+    .form-feedback.success{
+      display:block;
+      background:#f0fdf4;
+      border:1px solid #bbf7d0;
+      color:#166534;
+    }
+
+    .form-feedback.error{
+      display:block;
+      background:#fef2f2;
+      border:1px solid #fecaca;
+      color:#991b1b;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width:600px){
+      .wrap{ padding:18px 16px; gap:32px; }
+      .cards{ max-width:100%; }
+      .card{ padding:14px 16px; gap:14px; }
+      .header-center{ flex-direction:column; gap:10px; text-align:center; }
+      .site-footer{ max-width:100%; }
+      .site-footer.flex-col{ flex-direction:column; align-items:flex-start; gap:10px; }
+      .footer-links{ gap:12px; }
+      .modal-contact__panel{ padding:24px 20px 20px; }
+      .modal-contact__title{ font-size:1.1rem; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <canvas id="bokeh-canvas" aria-hidden="true"></canvas>
+
+  <div class="wrap">
+
+    <header>
+      <div class="header-center">
+        <img class="avatar" src="images/gravatar_FP.png" alt="Photo de profil de Fabrice Parriaux">
+        <h1>Bienvenue dans mon espace numérique&nbsp;!</h1>
+      </div>
+    </header>
+
+    <main>
+      <nav aria-label="Sections du portfolio">
+        <div class="cards">
+
+          <a class="card" href="creations_numeriques.html">
+            <h2>Créations numériques</h2>
+            <img class="icon" src="images/creation_numerique.svg" alt="" aria-hidden="true">
+          </a>
+
+          <a class="card" href="developpement_web.html">
+            <h2>Développement Web</h2>
+            <img class="icon" src="images/developpement_web.svg" alt="" aria-hidden="true">
+          </a>
+
+          <a class="card" href="photographe.html">
+            <h2>Auteur Photographe</h2>
+            <img class="icon" src="images/apn.svg" alt="" aria-hidden="true">
+          </a>
+
+        </div>
+      </nav>
+    </main>
+
+    <footer class="site-footer" role="contentinfo">
+      <div class="footer-identity">
+        <strong>Fabrice Parriaux</strong>
+        Chargé de production numérique et création visuelle&nbsp;&nbsp; &nbsp;&nbsp;Infographiste&nbsp;&nbsp;|&nbsp;&nbsp;Auteur-photographe
+      </div>
+      <div class="footer-links">
+        <button class="footer-link footer-link--cta" id="btnContact" aria-label="Ouvrir le formulaire de contact"><img src="images/contact.svg" alt="" aria-hidden="true" style="width:15px;height:15px;vertical-align:middle;margin-right:6px;">Contactez-moi</button>
+        <span class="footer-sep" aria-hidden="true">|</span>
+        <a class="footer-link" href="rgpd.html">Mentions légales &amp; RGPD</a>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- MODALE CONTACT -->
+  <div class="modal-contact" id="modalContact" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
+    <div class="modal-contact__overlay" id="contactOverlay"></div>
+    <div class="modal-contact__panel" id="contactPanel">
+      <button class="modal-contact__close" id="contactClose" aria-label="Fermer le formulaire de contact">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="pointer-events:none">
+          <path d="M1 1l12 12M13 1L1 13" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="modal-contact__head">
+        <img class="modal-contact__img" src="images/contact.svg" alt="" aria-hidden="true">
+        <h2 class="modal-contact__title" id="contactTitle">Contactez-moi</h2>
+      </div>
+      <div class="form-feedback" id="formFeedback" role="alert" aria-live="polite"></div>
+      <form class="contact-form" id="contactForm" action="https://formspree.io/f/xqenwenq" method="POST" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="contactName">Votre nom</label>
+          <input class="form-input" type="text" id="contactName" name="name" placeholder="Prénom Nom" required autocomplete="name">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="contactEmail">Votre adresse email</label>
+          <input class="form-input" type="email" id="contactEmail" name="email" placeholder="exemple@domaine.fr" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="contactMessage">Votre message</label>
+          <textarea class="form-textarea" id="contactMessage" name="message" placeholder="Décrivez votre projet ou votre demande..." required></textarea>
+        </div>
+        <button class="form-submit" type="submit" id="formSubmit">Envoyer</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    /* =====================================================
+       BOKEH BACKGROUND
+    ===================================================== */
+    (function() {
+      var SPEED = 3;
+      var canvas = document.getElementById('bokeh-canvas');
+      var ctx = canvas.getContext('2d');
+      var W = 0, H = 0;
+
+      function resize() {
+        W = window.innerWidth;
+        H = window.innerHeight;
+        canvas.width = Math.round(W * window.devicePixelRatio);
+        canvas.height = Math.round(H * window.devicePixelRatio);
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      }
+
+      resize();
+      window.addEventListener('resize', resize);
+
+      var COLORS = [
+        'rgba(255,100,120,',
+        'rgba(80,160,255,',
+        'rgba(60,220,180,',
+        'rgba(255,200,60,',
+        'rgba(180,80,255,',
+        'rgba(255,140,60,',
+        'rgba(60,200,255,',
+        'rgba(255,80,180,'
+      ];
+
+      var COUNT = 18;
+      var bubbles = [];
+
+      function initBubbles() {
+        bubbles = [];
+        for (var i = 0; i < COUNT; i++) {
+          bubbles.push({
+            x: Math.random() * W,
+            y: Math.random() * H,
+            r: Math.random() * 120 + 40,
+            vx: (Math.random() - 0.5) * 2 * SPEED,
+            vy: (Math.random() - 0.5) * 2 * SPEED,
+            color: COLORS[Math.floor(Math.random() * COLORS.length)],
+            alpha: Math.random() * 0.15 + 0.06,
+            phase: Math.random() * Math.PI * 2,
+            pulseSpeed: Math.random() * 0.004 + 0.002
+          });
+        }
+      }
+
+      initBubbles();
+
+      var t = 0;
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        for (var i = 0; i < bubbles.length; i++) {
+          var b = bubbles[i];
+          var pulse = 1 + 0.06 * Math.sin(t * b.pulseSpeed * 60 + b.phase);
+          var r = b.r * pulse;
+          var grad = ctx.createRadialGradient(b.x, b.y, r * 0.1, b.x, b.y, r);
+          grad.addColorStop(0, b.color + (b.alpha * 1.4) + ')');
+          grad.addColorStop(0.5, b.color + b.alpha + ')');
+          grad.addColorStop(1, b.color + '0)');
+          ctx.filter = 'blur(22px)';
+          ctx.beginPath();
+          ctx.arc(b.x, b.y, r, 0, Math.PI * 2);
+          ctx.fillStyle = grad;
+          ctx.fill();
+          ctx.filter = 'none';
+          b.x += b.vx;
+          b.y += b.vy;
+          if (b.x < -b.r)    b.x = W + b.r;
+          if (b.x > W + b.r) b.x = -b.r;
+          if (b.y < -b.r)    b.y = H + b.r;
+          if (b.y > H + b.r) b.y = -b.r;
+        }
+        t++;
+        requestAnimationFrame(draw);
+      }
+
+      draw();
+    })();
+
+    /* =====================================================
+       MODALE CONTACT
+    ===================================================== */
+    (function() {
+      var modal      = document.getElementById('modalContact');
+      var overlay    = document.getElementById('contactOverlay');
+      var btnClose   = document.getElementById('contactClose');
+      var btnOpen    = document.getElementById('btnContact');
+      var form       = document.getElementById('contactForm');
+      var feedback   = document.getElementById('formFeedback');
+      var submitBtn  = document.getElementById('formSubmit');
+      var lastTrigger = null;
+
+      function openModal(trigger) {
+        lastTrigger = trigger || null;
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        requestAnimationFrame(function() { btnClose.focus(); });
+      }
+
+      function closeModal() {
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        if (lastTrigger) { lastTrigger.focus(); }
+      }
+
+      btnOpen.addEventListener('click', function() { openModal(btnOpen); });
+      btnClose.addEventListener('click', closeModal);
+      overlay.addEventListener('click', closeModal);
+
+      /* Trap focus dans la modale */
+      modal.addEventListener('keydown', function(e) {
+        if (!modal.classList.contains('is-open')) return;
+        if (e.key === 'Escape') { closeModal(); return; }
+        if (e.key === 'Tab') {
+          var focusable = modal.querySelectorAll('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])');
+          var first = focusable[0];
+          var last  = focusable[focusable.length - 1];
+          if (e.shiftKey) {
+            if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+          } else {
+            if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+          }
+        }
+      });
+
+      /* Soumission AJAX : l'utilisateur reste dans la modale */
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        var name    = form.querySelector('#contactName').value.trim();
+        var email   = form.querySelector('#contactEmail').value.trim();
+        var message = form.querySelector('#contactMessage').value.trim();
+        var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        feedback.className = 'form-feedback';
+        feedback.textContent = '';
+
+        if (!name || !email || !message) {
+          feedback.className = 'form-feedback error';
+          feedback.textContent = 'Merci de remplir tous les champs avant d\'envoyer.';
+          return;
+        }
+        if (!emailRe.test(email)) {
+          feedback.className = 'form-feedback error';
+          feedback.textContent = 'L\'adresse email saisie ne semble pas valide.';
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Envoi en cours...';
+
+        fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        })
+        .then(function(response) {
+          if (response.ok) {
+            feedback.className = 'form-feedback success';
+            feedback.textContent = 'Message envoyé. Merci, je vous répondrai dans les plus brefs délais.';
+            form.reset();
+          } else {
+            return response.json().then(function(data) {
+              var msg = 'Erreur lors de l\'envoi.';
+              if (data && data.errors) {
+                msg = data.errors.map(function(err) { return err.message; }).join(', ');
+              }
+              throw new Error(msg);
+            });
+          }
+        })
+        .catch(function() {
+          feedback.className = 'form-feedback error';
+          feedback.textContent = 'Une erreur est survenue. Veuillez réessayer ou me contacter directement par email.';
+        })
+        .finally(function() {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Envoyer';
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>

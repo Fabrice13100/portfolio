@@ -1,0 +1,33 @@
+# Système Windows
+Thumbs.db
+Desktop.ini
+ehthumbs.db
+$RECYCLE.BIN/
+
+# Système macOS (au cas où tu travailles aussi sur Mac)
+.DS_Store
+._*
+
+# Éditeurs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Fichiers temporaires Office
+~$*
+*.tmp
+
+# Backups
+*.bak
+*.old
+*.orig
+
+# Logs
+*.log
+
+# Dossiers de travail VAE (à ne JAMAIS pousser)
+/_vae_perso/
+/_brouillons/
+/_archives/
