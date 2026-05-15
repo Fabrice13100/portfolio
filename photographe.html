@@ -76,9 +76,24 @@ body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;backgr
   justify-content:center;
 }
 
+/* Grille 3 cartes centrée */
+.grid-trio{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,340px));
+  gap:16px;
+  justify-content:center;
+}
+
 /* CARD */
 .card{border:1px solid var(--stroke);border-radius:10px;overflow:hidden;background:#fff;display:flex;flex-direction:column;}
 .card-media{position:relative;overflow:hidden;flex-shrink:0;}
+    .status-wip{
+      position:absolute;top:0;left:0;right:0;
+      background:rgba(194,65,12,.88);color:#fff;
+      font-size:11px;font-weight:500;text-align:center;
+      padding:5px 8px;letter-spacing:.02em;
+      pointer-events:none;
+    }
 .card img{width:100%;height:180px;object-fit:cover;object-position:top;display:block;transition:transform .3s ease;}
 .card-media a:hover img,.card-media a:focus-visible img{transform:scale(1.03);}
 .card-media a:focus-visible{outline:2px solid var(--neonBorder);outline-offset:2px;}
@@ -145,6 +160,7 @@ body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;backgr
 @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:700px){
   .grid-duo{grid-template-columns:1fr;max-width:400px;margin:0 auto;}
+  .grid-trio{grid-template-columns:1fr;max-width:400px;margin:0 auto;}
 }
 @media(max-width:600px){
   .grid{grid-template-columns:1fr;}
@@ -210,7 +226,7 @@ body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;backgr
 
 <!-- PHOTOGRAPHIE -->
 <section class="section" aria-labelledby="section-photo">
-  <div class="grid-duo">
+  <div class="grid-trio">
 
     <div class="card">
       <div class="card-media">
@@ -248,6 +264,25 @@ body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;backgr
       </div>
     </div>
 
+    <div class="card">
+      <div class="card-media">
+        <a href="https://nextimages.fabrice-parriaux.workers.dev/" target="_blank" rel="noopener"
+           aria-label="Visiter Nextimages photographies (nouvel onglet)">
+          <img src="images/vignette_woo.jpg"
+               alt="Nextimages photographies, projet WooCommerce"
+               loading="lazy">
+          <div class="status-wip" aria-hidden="true">PROJET EN COURS</div>
+        </a>
+      </div>
+      <div class="txt">
+        <strong>Nextimages photographies</strong><br>
+        Projet WooCommerce
+      </div>
+      <div class="btn-fiche-wrap">
+        <button class="btn-fiche" data-proj="P19" aria-label="Voir la fiche projet Nextimages WooCommerce">Voir la fiche projet</button>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -277,6 +312,17 @@ body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;backgr
 
 <script>
 const PROJECTS = {
+  P19: {
+    tag: "Photographie · E-commerce",
+    title: "Nextimages photographies, Projet WooCommerce",
+    contexte: "Solution WooCommerce avec plan marketing associé (boutique photo print) à venir (e-commerce + stratégie).",
+    objectif: "Créer une boutique en ligne de vente de tirages photographiques adossée à une stratégie marketing digitale, couvrant les dimensions e-commerce, référencement et fidélisation.",
+    public: "Particuliers et professionnels souhaitant acquérir des tirages photographiques en ligne.",
+    demarche: ["Analyse en cours pour deployer une solution e-commerce adaptée à la vente de tirages d'art (WooCommerce sur WordPress à l'étude)", "Conception de l'architecture boutique : catalogue produits, options d'impression, gestion des commandes", "Élaboration d'un plan marketing : SEO, réseaux sociaux, newsletter, promotions", "Intégration et paramétrage WooCommerce (modules paiement, livraison, fiscalité)"],
+    outils: ["WordPress", "WooCommerce", "Adobe Photoshop", "Adobe Lightroom"],
+    resultat: "Projet en cours de déploiement. Boutique accessible à l'adresse https://nextimages.fabrice-parriaux.workers.dev/",
+    competences: ["Conception et gestion d'une boutique e-commerce (WooCommerce)", "Stratégie marketing digital associée à une activité photographique", "Valorisation commerciale d'un fonds photographique en ligne", "Gestion de projet web de A à Z (conception, paramétrage, diffusion)"]
+  },
   P20: {
     tag: "Photographie · Nature & Paysages",
     title: "Portfolio Images du Haut-Doubs",
