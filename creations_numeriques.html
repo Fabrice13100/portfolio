@@ -35,7 +35,14 @@ body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;backgr
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
 
 /* CARD */
+
 .card{border:1px solid var(--stroke);border-radius:10px;overflow:hidden;background:#fff;display:flex;flex-direction:column;}
+.proj-latest-wrap{display:flex;flex-direction:column;}
+.proj-latest-bar{background:#1d4ed8;color:#fff;font-size:11px;font-weight:600;text-align:center;padding:5px 10px;letter-spacing:.04em;text-transform:uppercase;border-radius:6px 6px 0 0;}
+.proj-latest-card{border-radius:0 0 10px 10px!important;}
+
+
+
 .card-media{position:relative;overflow:hidden;flex-shrink:0;}
 .card img{width:100%;height:180px;object-fit:cover;object-position:top;display:block;transition:transform .3s ease;}
 .card-media a:hover img,.card-media a:focus-visible img{transform:scale(1.03);}
@@ -184,6 +191,15 @@ body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;backgr
 .footer-back:focus-visible{outline:2px solid var(--neonBorder);outline-offset:2px;border-radius:2px;}
 .footer-back:focus:not(:focus-visible){outline:none;}
 @media(max-width:600px){.site-footer{flex-direction:column;align-items:flex-start;gap:8px;}}
+
+.status-wip{
+  position:absolute;top:0;left:0;right:0;
+  background:rgba(194,65,12,.88);color:#fff;
+  font-size:11px;font-weight:500;text-align:center;
+  padding:5px 8px;letter-spacing:.02em;
+  pointer-events:none;
+    z-index:10;
+}
 
 </style>
 </head>
@@ -373,8 +389,9 @@ body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;backgr
       </div>
     </div>
 
-    <div class="card">
+<div class="card">
       <div class="card-media">
+        <div class="status-wip" aria-hidden="true">Dernier projet réalisé</div>
         <img src="images/vignette_enasis_video.jpg"
              alt="Vignette – Portail national de formation à distance ENASIS"
              loading="lazy">
@@ -396,6 +413,7 @@ body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;backgr
         <button class="btn-fiche" data-proj="P08" aria-label="Voir la fiche projet ENASIS vidéo">Voir la fiche projet</button>
       </div>
     </div>
+
 
     <div class="card">
       <div class="card-media">
