@@ -253,6 +253,23 @@
       user-select:none;
     }
 
+    .footer-cta-bar{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:24px;
+      flex-wrap:wrap;
+      width:100%;
+      max-width:480px;
+      margin:0 auto;
+    }
+
+    .footer-link--github{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+
     /* MODALE CONTACT */
     .modal-contact{
       position:fixed;
@@ -501,13 +518,13 @@
         Chargé de production numérique et création visuelle&nbsp;&nbsp; &nbsp;&nbsp;Infographiste&nbsp;&nbsp;|&nbsp;&nbsp;Auteur-photographe
       </div>
       <div class="footer-links">
-        <button class="footer-link footer-link--cta" id="btnContact" aria-label="Ouvrir le formulaire de contact"><img src="images/contact.svg" alt="" aria-hidden="true" style="width:15px;height:15px;vertical-align:middle;margin-right:6px;">Contactez-moi</button>
-        <span class="footer-sep" aria-hidden="true">|</span>
         <a class="footer-link" href="rgpd.html">Mentions légales &amp; RGPD</a>
-        <span class="footer-sep" aria-hidden="true">|</span>
-        <a class="footer-link" href="https://github.com/Fabrice13100/portfolio" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;"><img src="images/github.png" alt="" aria-hidden="true" style="width:15px;height:15px;display:block;">GitHub du portfolio disponible ici</a>
       </div>
     </footer>
+    <div class="footer-cta-bar">
+      <button class="footer-link footer-link--cta" id="btnContact" aria-label="Ouvrir le formulaire de contact"><img src="images/contact.svg" alt="" aria-hidden="true" style="width:15px;height:15px;vertical-align:middle;margin-right:6px;">Contactez-moi</button>
+      <a class="footer-link footer-link--github" href="https://github.com/Fabrice13100/portfolio" target="_blank" rel="noopener noreferrer"><img src="images/github.png" alt="" aria-hidden="true" style="width:15px;height:15px;display:block;">GitHub du portfolio disponible ici</a>
+    </div>
 
   </div>
 
