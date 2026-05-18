@@ -690,11 +690,11 @@ resultat: "Site opérationnel avec réservation et paiement en ligne fonctionnel
     P13: {
     tag: "Web · Application métier",
     title: "P13 - Page Web de gestion de réunions",
-    contexte: "Dans le cadre d'un besoin opérationnel, conception et mise en ligne d'une page web permettant de gérer la présence à une réunion.",
+    contexte: "Les officiers d'encadrement du centre de secours de Pontarlier devaient organiser et suivre 4 réunions mensuelles de travail sans outil centralisé adapté. La gestion s'effectuait par échanges de courriels, ce qui générait des oublis et une perte de traçabilité. Le besoin identifié était de disposer d'un outil web léger en ligne, facilement accessible, permettant d'informer le collège des sous-officiers sur les dates de réunions et le suivi des présences..",
     objectif: "Remplacer un suivi papier par un formulaire numérique connecté à une base de données, facilitant la saisie et la consultation des présences.",
     public: "Sous-Officiers de Garde pompiers (SOG).",
     demarche: [
-      "Structuration d'une base de données MySQL simple, avec définition d'une table adaptée (identité / statut)",
+      "Le besoin métier n'étant pas couvert par les outils existants, j'ai retenu la solution d'une application web autonome développée en PHP et MySQL. La démarche a couvert l'analyse du besoin, la conception du modèle de données, le développement et le déploiement.",
       "Mise en œuvre de requêtes SQL de consultation et de mise à jour",
       "Développement d'une page PHP assurant la connexion à la base, le traitement des données issues d'un formulaire utilisateur et l'affichage dynamique des résultats",
       "Intégration des bonnes pratiques d'accessibilité sur le formulaire : labels associés aux champs, navigation clavier, retours visuels explicites",
