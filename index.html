@@ -542,7 +542,9 @@
         <h2 class="modal-contact__title" id="contactTitle">Contactez-moi</h2>
       </div>
       <div class="form-feedback" id="formFeedback" role="alert" aria-live="polite"></div>
-      <form class="contact-form" id="contactForm" action="https://formspree.io/f/mzdonzql" method="POST" novalidate>
+      <form class="contact-form" id="contactForm" action="https://api.web3forms.com/submit" method="POST" novalidate>
+        <input type="hidden" name="access_key" value="5f6316c3-1900-407c-9642-a8db7df32ecf">
+        <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
         <div class="form-group">
           <label class="form-label" for="contactName">Votre nom</label>
           <input class="form-input" type="text" id="contactName" name="name" placeholder="Prénom Nom" required autocomplete="name">
@@ -727,19 +729,16 @@
           headers: { 'Accept': 'application/json' }
         })
         .then(function(response) {
-          if (response.ok) {
-            feedback.className = 'form-feedback success';
-            feedback.textContent = 'Message envoyé. Merci, je vous répondrai dans les plus brefs délais.';
-            form.reset();
-          } else {
-            return response.json().then(function(data) {
-              var msg = 'Erreur lors de l\'envoi.';
-              if (data && data.errors) {
-                msg = data.errors.map(function(err) { return err.message; }).join(', ');
-              }
+          return response.json().then(function(data) {
+            if (response.ok && data.success === true) {
+              feedback.className = 'form-feedback success';
+              feedback.textContent = 'Message envoyé. Merci, je vous répondrai dans les plus brefs délais.';
+              form.reset();
+            } else {
+              var msg = (data && data.message) ? data.message : 'Erreur lors de l\'envoi.';
               throw new Error(msg);
-            });
-          }
+            }
+          });
         })
         .catch(function() {
           feedback.className = 'form-feedback error';
