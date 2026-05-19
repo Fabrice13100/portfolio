@@ -520,21 +520,15 @@
       <div class="footer-links">
         <a class="footer-link" href="rgpd.html">Mentions légales &amp; RGPD</a>
       </div>
-	<script data-goatcounter="https://bouldaga.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script data-goatcounter="https://bouldaga.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <script>
   window.addEventListener('load', function() {
     fetch('https://bouldaga.goatcounter.com/counter//count.json')
       .then(function(r){ return r.json(); })
       .then(function(d){
         var el = document.getElementById('gc-visits');
-		
-		
-		
-if (el && d && d.count !== undefined) el.textContent = d.count + ' visite' + (parseInt(d.count) > 1 ? 's' : '');
-      
-	  
-	  
-	  })
+        if (el && d && d.count !== undefined) el.textContent = d.count + ' visite' + (parseInt(d.count) > 1 ? 's' : '');
+      })
       .catch(function(){});
   });
 </script>	  
