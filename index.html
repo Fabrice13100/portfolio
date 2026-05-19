@@ -527,8 +527,14 @@
       .then(function(r){ return r.json(); })
       .then(function(d){
         var el = document.getElementById('gc-visits');
-        if (el && d && d.count) el.textContent = d.count + ' visite' + (parseInt(d.count) > 1 ? 's' : '');
-      })
+		
+		
+		
+if (el && d && d.count !== undefined) el.textContent = d.count + ' visite' + (parseInt(d.count) > 1 ? 's' : '');
+      
+	  
+	  
+	  })
       .catch(function(){});
   });
 </script>	  
