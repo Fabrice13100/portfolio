@@ -45,7 +45,7 @@
       min-height:100vh;
       max-width:1200px;
       margin:0 auto;
-      padding:50px 26px 40px;
+      padding:100px 26px 40px;
       display:flex;
       flex-direction:column;
       justify-content:flex-start;
@@ -519,21 +519,9 @@
       </div>
       <div class="footer-links">
         <a class="footer-link" href="rgpd.html">Mentions légales &amp; RGPD</a>
+        <span class="footer-sep">|</span>
+        <span class="footer-link" id="gc-visits" aria-live="polite"></span>
       </div>
-<script data-goatcounter="https://bouldaga.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
-<script>
-  window.addEventListener('load', function() {
-    fetch('https://bouldaga.goatcounter.com/counter//count.json')
-      .then(function(r){ return r.json(); })
-      .then(function(d){
-        var el = document.getElementById('gc-visits');
-        if (el && d && d.count !== undefined) el.textContent = d.count + ' visite' + (parseInt(d.count) > 1 ? 's' : '');
-      })
-      .catch(function(){});
-  });
-</script>	  
-
-	  
     </footer>
     <div class="footer-cta-bar">
       <button class="footer-link footer-link--cta" id="btnContact" aria-label="Ouvrir le formulaire de contact"><img src="images/contact.svg" alt="" aria-hidden="true" style="width:15px;height:15px;vertical-align:middle;margin-right:6px;">Contactez-moi</button>
@@ -764,6 +752,21 @@
         });
       });
     })();
+  </script>
+
+  <script data-goatcounter="https://bouldaga.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+  <script>
+    window.addEventListener('load', function() {
+      fetch('https://bouldaga.goatcounter.com/counter//count.json')
+        .then(function(r){ return r.json(); })
+        .then(function(d){
+          var el = document.getElementById('gc-visits');
+          if (el && d && d.count !== undefined) {
+            el.textContent = d.count + ' visite' + (parseInt(d.count) > 1 ? 's' : '');
+          }
+        })
+        .catch(function(){});
+    });
   </script>
 
 </body>
